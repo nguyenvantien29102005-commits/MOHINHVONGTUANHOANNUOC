@@ -1,0 +1,1865 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07172d">
+<title>Thử thách hành trình của giọt nước</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+  --bg:#07172d;
+  --panel:#102844;
+  --panel2:#153755;
+  --cyan:#59e5f5;
+  --blue:#86baff;
+  --purple:#b9a8ff;
+  --white:#f5fbff;
+  --muted:#b9cee0;
+  --line:rgba(134,211,255,.22);
+  --green:#5ee5ac;
+  --red:#ff9d9d;
+  --gold:#ffe092;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--white);
+  background:
+    radial-gradient(ellipse at 8% 0%,#164c75,transparent 45%),
+    radial-gradient(ellipse at 100% 90%,#33245e,transparent 46%),
+    var(--bg);
+  font-family:"Be Vietnam Pro",Arial,sans-serif;
+  min-height:100vh;
+  line-height:1.7;
+}
+button,a{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible{
+  outline:3px solid var(--cyan);
+  outline-offset:3px;
+}
+button:disabled{cursor:not-allowed}
+.hide{display:none!important}
+
+/* HEADER */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(5,20,40,.93);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.nav{
+  max-width:1250px;
+  margin:auto;
+  padding:13px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+  font-size:13px;
+}
+.logo-icon{
+  display:grid;
+  place-items:center;
+  width:43px;
+  height:43px;
+  border-radius:13px;
+  background:linear-gradient(130deg,#3edcec,#747ef4);
+  font-size:24px;
+}
+.home-link{
+  color:white;
+  text-decoration:none;
+  padding:10px 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  font-weight:800;
+  font-size:12px;
+}
+.home-link:hover{border-color:var(--cyan)}
+
+main{
+  max-width:1250px;
+  margin:auto;
+  padding:35px 22px 80px;
+}
+
+/* GIỚI THIỆU */
+
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  gap:35px;
+  margin-bottom:45px;
+}
+.eyebrow{
+  color:var(--cyan);
+  letter-spacing:2.1px;
+  text-transform:uppercase;
+  font-size:11px;
+  font-weight:900;
+}
+.hero h1{
+  font-size:clamp(31px,4.4vw,57px);
+  margin:15px 0 20px;
+  line-height:1.28;
+  font-weight:900;
+}
+.gradient{
+  background:linear-gradient(95deg,#53e8f3,#89bdff,#c6a9ff);
+  color:transparent;
+  background-clip:text;
+  -webkit-background-clip:text;
+}
+.hero p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:2;
+}
+.hero-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:22px;
+}
+.hero-tags span{
+  border:1px solid var(--line);
+  padding:8px 12px;
+  border-radius:50px;
+  background:#ffffff0c;
+  font-size:11px;
+  font-weight:800;
+}
+.hero-art{
+  border:1px solid var(--line);
+  border-radius:27px;
+  overflow:hidden;
+  background:#16375e;
+  box-shadow:0 25px 55px #0005;
+}
+.hero-art svg{display:block;width:100%;height:auto}
+
+/* KHUNG CHÍNH */
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 285px;
+  gap:22px;
+  align-items:start;
+}
+.card{
+  background:linear-gradient(145deg,#153657,#0b1c35);
+  border:1px solid var(--line);
+  border-radius:25px;
+  box-shadow:0 15px 45px #0003;
+}
+.quiz{
+  padding:30px;
+  min-height:490px;
+}
+.q-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.badge{
+  display:inline-flex;
+  border:1px solid #5ce2f455;
+  border-radius:50px;
+  background:#55dff515;
+  color:#8ff4ff;
+  padding:7px 12px;
+  font-size:10px;
+  font-weight:900;
+}
+.q-index{
+  color:var(--muted);
+  font-weight:700;
+  font-size:12px;
+}
+.quiz h2{
+  font-size:clamp(20px,2.6vw,29px);
+  line-height:1.55;
+  margin:25px 0 12px;
+}
+.instruction{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:22px;
+}
+.question-visual{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:19px;
+  margin:12px 0 22px;
+  border-radius:17px;
+  border:1px solid var(--line);
+  background:linear-gradient(110deg,#124666,#18375d);
+}
+.visual-item{
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  gap:5px;
+}
+.visual-item .emoji{font-size:34px}
+.visual-item span:last-child{
+  font-size:10px;
+  color:#d1e9f8;
+  font-weight:700;
+}
+.visual-arrow{
+  color:var(--cyan);
+  font-size:22px;
+  font-weight:900;
+}
+
+/* LỰA CHỌN */
+
+.choices{display:grid;gap:12px}
+.choice{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  width:100%;
+  text-align:left;
+  padding:15px;
+  border:1px solid #517b9e;
+  border-radius:15px;
+  background:#0a2947;
+  color:var(--white);
+  font-size:13px;
+  line-height:1.75;
+  min-height:62px;
+  transition:.2s;
+}
+.choice:not(:disabled):hover{
+  background:#154967;
+  border-color:var(--cyan);
+  transform:translateX(3px);
+}
+.choice.selected{
+  background:#144c65;
+  border-color:var(--cyan);
+}
+.choice.correct{
+  border-color:var(--green);
+  background:#134a3c;
+}
+.choice.wrong{
+  border-color:var(--red);
+  background:#572b3d;
+}
+.choice:disabled{opacity:1}
+.option-letter{
+  flex:0 0 33px;
+  height:33px;
+  display:grid;
+  place-items:center;
+  background:#ffffff13;
+  border-radius:10px;
+  color:#8ef2ff;
+  font-weight:900;
+}
+
+/* ĐÚNG SAI */
+
+.tf-grid{display:grid;gap:11px}
+.tf-row{
+  background:#0b2b49;
+  border:1px solid #517b9e;
+  border-radius:14px;
+  padding:15px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:center;
+  font-size:12px;
+}
+.tf-row.correct{border-color:var(--green)}
+.tf-row.wrong{border-color:var(--red)}
+.tf-buttons{display:flex;gap:7px}
+.tf-buttons button{
+  padding:9px 13px;
+  border-radius:9px;
+  background:#19445e;
+  border:1px solid #6484a0;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+}
+.tf-buttons button.chosen{
+  background:#62ddeb;
+  color:#072238;
+}
+.tf-buttons button:disabled{opacity:1}
+
+/* SẮP XẾP */
+
+.order-list{display:grid;gap:11px}
+.order-item{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:13px;
+  border-radius:14px;
+  border:1px solid #557f9e;
+  background:#0b2b49;
+}
+.order-no{
+  width:32px;
+  height:32px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:#246680;
+  font-size:12px;
+  font-weight:900;
+}
+.order-text{flex:1;font-size:13px}
+.order-item button{
+  background:#1d4a65;
+  border:1px solid #6a9db1;
+  border-radius:9px;
+  color:white;
+  padding:8px 11px;
+  font-weight:900;
+}
+
+/* PHẢN HỒI */
+
+.feedback{
+  margin-top:20px;
+  border:1px solid #48d4eb55;
+  border-left:4px solid var(--cyan);
+  background:#103b54;
+  border-radius:14px;
+  padding:17px 19px;
+  font-size:12px;
+  line-height:1.9;
+}
+.feedback.good{border-left-color:var(--green)}
+.feedback.bad{border-left-color:var(--red)}
+.feedback strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+/* NÚT */
+
+.actions{
+  margin-top:28px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+}
+.btn{
+  border:1px solid #6488a3;
+  border-radius:12px;
+  color:#fff;
+  background:#1b4161;
+  padding:12px 17px;
+  font-weight:800;
+  font-size:12px;
+  transition:.2s;
+}
+.btn.primary{
+  background:linear-gradient(110deg,#52e2ee,#9aaaff);
+  color:#061f35;
+  border:0;
+}
+.btn:not(:disabled):hover{filter:brightness(1.14)}
+.btn:disabled{opacity:.38}
+
+/* BẢNG THEO DÕI */
+
+.sidebar{
+  padding:21px;
+  position:sticky;
+  top:95px;
+}
+.sidebar h3{
+  font-size:17px;
+  margin:0 0 10px;
+}
+.sidebar p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.9;
+}
+.progress{
+  height:11px;
+  border-radius:50px;
+  background:#06192d;
+  overflow:hidden;
+  margin:17px 0 9px;
+}
+.progress-fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#40e1ee,#a99bff);
+  transition:width .25s;
+}
+.progress-caption{
+  color:var(--muted);
+  font-size:11px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin:20px 0;
+}
+.stat{
+  background:#ffffff0b;
+  border:1px solid var(--line);
+  padding:15px 7px;
+  border-radius:13px;
+  text-align:center;
+}
+.stat strong{
+  display:block;
+  color:var(--cyan);
+  font-size:25px;
+  line-height:1.35;
+}
+.stat span{
+  font-size:10px;
+  color:var(--muted);
+}
+.map{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:7px;
+  margin:14px 0 22px;
+}
+.map button{
+  background:#0e314f;
+  color:white;
+  border:1px solid #577e9d;
+  padding:10px 0;
+  border-radius:9px;
+  font-weight:900;
+  font-size:11px;
+}
+.map button.done{
+  background:#175b43;
+  border-color:var(--green);
+}
+.map button.current{
+  outline:2px solid var(--cyan);
+}
+.small{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* KẾT QUẢ */
+
+.result{
+  max-width:850px;
+  margin:35px auto;
+  padding:35px;
+  text-align:center;
+}
+.result h2{
+  font-size:clamp(24px,3vw,37px);
+}
+.score{
+  margin:15px 0;
+  font-size:clamp(50px,7vw,90px);
+  font-weight:900;
+  line-height:1.2;
+  background:linear-gradient(110deg,#59ecf8,#a7a6ff);
+  background-clip:text;
+  color:transparent;
+}
+.result p{color:var(--muted)}
+.review{
+  display:grid;
+  gap:11px;
+  text-align:left;
+  margin:26px 0;
+}
+.review-item{
+  background:#0c2540;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:15px;
+  font-size:12px;
+  line-height:1.9;
+}
+.review-item strong{color:var(--cyan)}
+
+/* RESPONSIVE */
+
+@media(max-width:950px){
+  .hero{grid-template-columns:1fr}
+  .hero-art{max-width:650px}
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static;order:-1}
+  .map{grid-template-columns:repeat(10,1fr)}
+}
+@media(max-width:580px){
+  main{padding:24px 13px 55px}
+  .nav{padding:10px}
+  .logo{font-size:11px}
+  .logo-icon{width:35px;height:35px}
+  .quiz,.sidebar,.result{padding:18px}
+  .hero h1{font-size:32px}
+  .tf-row{grid-template-columns:1fr}
+  .map{grid-template-columns:repeat(5,1fr)}
+  .btn{padding:11px}
+  .actions{gap:6px}
+  .visual-item .emoji{font-size:25px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation:none!important;
+    transition:none!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">💧</div>
+      <span>HÀNH TRÌNH CỦA NƯỚC</span>
+    </div>
+    <a href="../index.html" class="home-link">
+      ← Trang chủ
+    </a>
+  </nav>
+</header>
+
+<main>
+
+<!-- TRANG GIỚI THIỆU -->
+
+<section class="hero">
+
+  <div>
+    <div class="eyebrow">
+      ĐỊA LÍ 6 · HỌC TẬP TƯƠNG TÁC
+    </div>
+
+    <h1>
+      THỬ THÁCH
+      <span class="gradient">
+        HÀNH TRÌNH CỦA GIỌT NƯỚC
+      </span>
+    </h1>
+
+    <p>
+      Một giọt nước có thể đi từ biển lên bầu trời,
+      rơi xuống núi, thấm vào đất rồi trở về sông.
+      Nhưng liệu tất cả giọt nước đều đi
+      theo cùng một con đường?
+      Hãy khám phá và giải quyết 15 thử thách
+      để hiểu vòng tuần hoàn của nước.
+    </p>
+
+    <div class="hero-tags">
+      <span>💧 15 nhiệm vụ</span>
+      <span>🧠 Tư duy – vận dụng</span>
+      <span>🏆 Chấm điểm tự động</span>
+    </div>
+  </div>
+
+  <!-- SƠ ĐỒ MINH HỌA SVG -->
+
+  <div class="hero-art">
+
+    <svg viewBox="0 0 720 440"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Sơ đồ vòng tuần hoàn nước với Mặt Trời, mây, núi, mưa, sông, nước thấm xuống đất">
+
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#185493"/>
+          <stop offset="1" stop-color="#75d5e6"/>
+        </linearGradient>
+
+        <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#26d7f0"/>
+          <stop offset="1" stop-color="#146b9e"/>
+        </linearGradient>
+
+        <marker id="goldArrow"
+          markerWidth="9" markerHeight="9"
+          refX="7" refY="3"
+          orient="auto">
+          <path d="M0 0L8 3L0 6Z"
+            fill="#ffe39a"/>
+        </marker>
+      </defs>
+
+      <rect width="720" height="440"
+        fill="url(#sky)"/>
+
+      <!-- MẶT TRỜI -->
+      <circle cx="98" cy="90" r="42"
+        fill="#ffdf75"/>
+
+      <g stroke="#ffeb9e"
+        stroke-width="5" stroke-linecap="round">
+        <path d="M98 18V32"/>
+        <path d="M98 147V163"/>
+        <path d="M27 90H44"/>
+        <path d="M154 90H172"/>
+        <path d="M48 40L59 51"/>
+        <path d="M137 129L149 141"/>
+      </g>
+
+      <!-- MÂY -->
+      <g fill="#f5fbff">
+        <ellipse cx="423" cy="117"
+          rx="121" ry="43"/>
+        <circle cx="356" cy="89" r="52"/>
+        <circle cx="420" cy="70" r="68"/>
+        <circle cx="491" cy="101" r="51"/>
+      </g>
+
+      <!-- NÚI -->
+      <path d="M385 339L564 139L720 339Z"
+        fill="#477987"/>
+
+      <path d="M502 208L564 139L623 211
+               592 198L570 215L550 198Z"
+        fill="#f4fdff"/>
+
+      <path d="M308 339L448 205L573 339Z"
+        fill="#3c8978"/>
+
+      <!-- BIỂN -->
+      <path d="M0 319Q160 305 325 319
+               L325 440H0Z"
+        fill="url(#ocean)"/>
+
+      <!-- ĐẤT -->
+      <path d="M325 339Q500 319 720 337V440H325Z"
+        fill="#916846"/>
+
+      <!-- DÒNG SÔNG -->
+      <path d="M552 296Q510 341 456 355
+               T325 375"
+        fill="none"
+        stroke="#65e4f5"
+        stroke-width="17"
+        stroke-linecap="round"/>
+
+      <!-- BỐC HƠI -->
+      <path d="M150 308Q114 218 273 169"
+        fill="none"
+        stroke="#ffe39a"
+        stroke-width="8"
+        marker-end="url(#goldArrow)"/>
+
+      <!-- MƯA -->
+      <g stroke="#bcf7ff"
+        stroke-width="6"
+        stroke-linecap="round">
+        <path d="M365 162L350 215"/>
+        <path d="M423 171L407 226"/>
+        <path d="M484 163L468 217"/>
+        <path d="M389 244L376 292"/>
+        <path d="M458 244L445 292"/>
+      </g>
+
+      <!-- THẤM -->
+      <g stroke="#65e4f5"
+        stroke-width="5"
+        stroke-linecap="round">
+        <path d="M608 346V399"/>
+        <path d="M640 349V402"/>
+      </g>
+
+      <g fill="#fff"
+        font-family="Arial,sans-serif"
+        font-weight="bold"
+        font-size="18">
+        <text x="42" y="237">BỐC HƠI</text>
+        <text x="339" y="32">NGƯNG TỤ</text>
+        <text x="370" y="318">MƯA</text>
+        <text x="584" y="427">THẤM</text>
+        <text x="40" y="398">ĐẠI DƯƠNG</text>
+      </g>
+
+    </svg>
+
+  </div>
+
+</section>
+
+
+<!-- KHU VỰC HỌC TẬP -->
+
+<section class="layout" id="learning">
+
+  <div class="quiz card">
+
+    <div class="q-top">
+      <span class="badge" id="qType">
+        TRẮC NGHIỆM
+      </span>
+      <span class="q-index" id="qCount">
+        Câu 1/15
+      </span>
+    </div>
+
+    <h2 id="questionTitle"></h2>
+
+    <p class="instruction" id="instruction"></p>
+
+    <div id="questionVisual"></div>
+
+    <div id="answerArea"></div>
+
+    <div
+      id="feedback"
+      class="feedback hide"
+      aria-live="polite">
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="prev">
+        ← Câu trước
+      </button>
+
+      <button class="btn primary" id="check">
+        Kiểm tra
+      </button>
+
+      <button class="btn" id="next">
+        Câu tiếp →
+      </button>
+    </div>
+
+  </div>
+
+  <aside class="sidebar card">
+
+    <h3>🎯 NHIỆM VỤ KHÁM PHÁ</h3>
+
+    <p>
+      Hoàn thành từng nhiệm vụ, kiểm tra
+      đáp án và đọc lời giải thích
+      để hiểu rõ hành trình của nước.
+    </p>
+
+    <div class="progress">
+      <div
+        class="progress-fill"
+        id="progressFill"></div>
+    </div>
+
+    <div
+      class="progress-caption"
+      id="progressText">
+      Đã hoàn thành 0/15
+    </div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <strong id="completed">0</strong>
+        <span>Nhiệm vụ đã làm</span>
+      </div>
+
+      <div class="stat">
+        <strong id="scoreNow">0</strong>
+        <span>Điểm / 100</span>
+      </div>
+
+    </div>
+
+    <h3 style="font-size:13px">
+      BẢN ĐỒ NHIỆM VỤ
+    </h3>
+
+    <div class="map" id="questionMap"></div>
+
+    <button
+      class="btn primary"
+      id="finish"
+      style="width:100%">
+      🏆 Xem kết quả
+    </button>
+
+    <p class="small">
+      Mỗi nhiệm vụ có tối đa 10 điểm.
+      Bài đúng/sai được tính điểm theo từng ý.
+      Tổng điểm quy đổi về thang 100.
+    </p>
+
+  </aside>
+
+</section>
+
+
+<!-- KẾT QUẢ -->
+
+<section class="result card hide" id="result">
+
+  <div class="eyebrow">
+    HOÀN THÀNH THỬ THÁCH
+  </div>
+
+  <h2 id="resultTitle"></h2>
+
+  <div class="score" id="finalScore"></div>
+
+  <p id="resultMessage"></p>
+
+  <div class="review" id="review"></div>
+
+  <button class="btn primary" id="retry">
+    ↻ Thực hiện lại thử thách
+  </button>
+
+</section>
+
+</main>
+
+
+<script>
+"use strict";
+
+// ====================================
+// 1. NGÂN HÀNG 15 NHIỆM VỤ
+// ====================================
+
+const questions = [
+
+  // CÂU 1
+  {
+    type:"mc",
+    level:"Nhận biết",
+    q:"Vòng tuần hoàn của nước trong tự nhiên là gì?",
+    options:[
+      "Sự chuyển động chỉ có ở nước biển",
+      "Sự vận động liên tục của nước giữa khí quyển, bề mặt và bên dưới mặt đất",
+      "Quá trình nước biến mất hoàn toàn sau khi bốc hơi",
+      "Sự chuyển động chỉ có ở các dòng sông"
+    ],
+    correct:1,
+    why:
+      "Nước luôn di chuyển giữa khí quyển, " +
+      "lục địa, đại dương và các tầng đất đá. " +
+      "Trong quá trình đó, nước có thể " +
+      "chuyển đổi giữa ba thể."
+  },
+
+  // CÂU 2
+  {
+    type:"mc",
+    level:"Nhận biết",
+    q:"Nguồn năng lượng quan trọng thúc đẩy sự bốc hơi nước trong tự nhiên là gì?",
+    options:[
+      "Năng lượng Mặt Trời",
+      "Ánh sáng Mặt Trăng",
+      "Ánh sáng đèn đường",
+      "Lực hút của các vì sao"
+    ],
+    correct:0,
+    why:
+      "Năng lượng Mặt Trời làm ấm nước " +
+      "và thúc đẩy bốc hơi, góp phần " +
+      "duy trì vòng tuần hoàn nước."
+  },
+
+  // CÂU 3
+  {
+    type:"mc",
+    level:"Thông hiểu",
+    q:"Vai trò của trọng lực trong vòng tuần hoàn nước được thể hiện rõ nhất qua hiện tượng nào?",
+    options:[
+      "Làm nước bốc hơi lên khí quyển",
+      "Làm nước mưa rơi xuống và nước chảy từ cao xuống thấp",
+      "Làm Mặt Trời tỏa sáng",
+      "Biến mọi đám mây thành băng"
+    ],
+    correct:1,
+    why:
+      "Trọng lực làm các hạt giáng thủy " +
+      "rơi xuống mặt đất và góp phần " +
+      "làm nước chảy từ nơi cao xuống " +
+      "nơi thấp."
+  },
+
+  // CÂU 4
+  {
+    type:"mc",
+    level:"Thông hiểu",
+    q:"Quá trình thoát hơi nước của thực vật diễn ra chủ yếu thông qua bộ phận nào?",
+    options:[
+      "Rễ cây",
+      "Thân gỗ",
+      "Lá cây",
+      "Hạt giống"
+    ],
+    correct:2,
+    why:
+      "Cây hấp thụ nước từ đất qua rễ, " +
+      "đưa nước lên các bộ phận của cây. " +
+      "Một phần nước thoát ra khí quyển " +
+      "chủ yếu qua khí khổng ở lá."
+  },
+
+  // CÂU 5
+  {
+    type:"mc",
+    level:"Thông hiểu",
+    q:"Khi hơi nước trong không khí ngưng tụ, hiện tượng nào có thể xuất hiện?",
+    options:[
+      "Các giọt nước nhỏ hình thành và có thể tạo mây",
+      "Toàn bộ nước biến thành đất",
+      "Nước lập tức biến mất khỏi Trái Đất",
+      "Không khí luôn nóng lên"
+    ],
+    correct:0,
+    why:
+      "Hơi nước khi ngưng tụ tạo thành " +
+      "những giọt nước rất nhỏ. " +
+      "Các giọt nước hoặc tinh thể băng " +
+      "có thể tập hợp thành mây."
+  },
+
+  // CÂU 6
+  {
+    type:"mc",
+    level:"Thông hiểu",
+    q:"Sau khi mưa rơi xuống bề mặt đất, nước có thể đi theo con đường nào?",
+    options:[
+      "Chỉ có thể chảy ra biển",
+      "Chỉ có thể bốc hơi",
+      "Có thể thấm vào đất, chảy trên bề mặt hoặc bốc hơi",
+      "Không thể tiếp tục di chuyển"
+    ],
+    correct:2,
+    why:
+      "Nước mưa có thể thấm vào đất, " +
+      "chảy vào sông hồ, được sinh vật " +
+      "sử dụng hoặc tiếp tục bốc hơi. " +
+      "Không phải mọi giọt nước " +
+      "đều đi theo cùng một con đường."
+  },
+
+  // CÂU 7
+  {
+    type:"mc",
+    level:"Thông hiểu",
+    q:"Dạng vòng tuần hoàn nào có sự vận chuyển nước từ đại dương qua khí quyển đến lục địa rồi có thể quay lại đại dương?",
+    options:[
+      "Vòng tuần hoàn nhỏ",
+      "Vòng tuần hoàn lớn",
+      "Chỉ quá trình ngưng tụ",
+      "Chỉ quá trình đóng băng"
+    ],
+    correct:1,
+    why:
+      "Vòng tuần hoàn lớn là cách khái quát " +
+      "quá trình nước luân chuyển giữa " +
+      "đại dương, khí quyển và lục địa. " +
+      "Nước có thể trở về biển qua " +
+      "dòng chảy mặt và nước dưới đất."
+  },
+
+  // CÂU 8
+  {
+    type:"mc",
+    level:"Vận dụng",
+    q:"Vì sao một con sông vẫn có thể có nước chảy trong nhiều ngày không mưa?",
+    options:[
+      "Vì nước sông không bao giờ giảm",
+      "Vì sông có thể nhận nước từ hồ, nước dưới đất và các nguồn bổ sung khác",
+      "Vì Mặt Trăng tự tạo nước trong sông",
+      "Vì nước trong sông hoàn toàn không bốc hơi"
+    ],
+    correct:1,
+    why:
+      "Ngoài nước mưa trực tiếp, sông " +
+      "có thể được bổ sung từ nước dưới đất, " +
+      "hồ, dòng chảy từ thượng nguồn " +
+      "hoặc tuyết băng tan tại những nơi có băng tuyết."
+  },
+
+  // CÂU 9
+  {
+    type:"mc",
+    level:"Vận dụng",
+    q:"Một sân trường được bê tông hóa gần như toàn bộ. Khi mưa lớn, điều gì có thể xảy ra?",
+    options:[
+      "Nước thấm nhanh hơn qua mọi bề mặt bê tông",
+      "Dòng chảy mặt tăng và có thể gây ngập nếu thoát nước không kịp",
+      "Mưa tự động dừng lại",
+      "Không còn hiện tượng bốc hơi"
+    ],
+    correct:1,
+    why:
+      "Bê tông thường ít thấm nước. " +
+      "Khi mưa lớn, lượng nước chảy " +
+      "trên bề mặt có thể tăng, " +
+      "dẫn đến nguy cơ ngập nếu " +
+      "hệ thống thoát nước không đáp ứng."
+  },
+
+  // CÂU 10
+  {
+    type:"mc",
+    level:"Vận dụng",
+    q:"Nước luôn tuần hoàn trong tự nhiên. Vì sao chúng ta vẫn cần tiết kiệm nước sạch?",
+    options:[
+      "Vì vòng tuần hoàn của nước đã ngừng hoạt động",
+      "Vì nước sạch có thể sử dụng không phân bố đều, có thể thiếu hoặc bị ô nhiễm",
+      "Vì toàn bộ nước mưa đều là nước mặn",
+      "Vì nước bốc hơi không bao giờ trở lại Trái Đất"
+    ],
+    correct:1,
+    why:
+      "Nước trên Trái Đất vẫn tuần hoàn, " +
+      "nhưng lượng nước ngọt dễ tiếp cận " +
+      "không phân bố đều và có thể " +
+      "bị ô nhiễm. Do đó cần " +
+      "sử dụng và bảo vệ nguồn nước hợp lí."
+  },
+
+  // CÂU 11 - ĐÚNG SAI
+  {
+    type:"tf",
+    level:"Phân tích",
+    q:"Hãy xác định tính đúng hoặc sai của các nhận định về vòng tuần hoàn nước.",
+    statements:[
+      [
+        "Nước có thể tồn tại ở thể rắn, lỏng và khí trong tự nhiên.",
+        true
+      ],
+      [
+        "Vòng tuần hoàn nước có một điểm bắt đầu và kết thúc cố định.",
+        false
+      ],
+      [
+        "Năng lượng Mặt Trời và trọng lực có vai trò quan trọng đối với sự vận động của nước.",
+        true
+      ]
+    ],
+    why:
+      "Nước vận động liên tục và có thể " +
+      "chuyển đổi trạng thái. " +
+      "Vòng tuần hoàn không có điểm " +
+      "bắt đầu hay kết thúc cố định."
+  },
+
+  // CÂU 12 - ĐÚNG SAI
+  {
+    type:"tf",
+    level:"Phân tích",
+    q:"Đánh giá các nhận định về nước mưa, dòng chảy và nước dưới đất.",
+    statements:[
+      [
+        "Một phần nước mưa có thể thấm xuống đất.",
+        true
+      ],
+      [
+        "Toàn bộ nước mưa đều ngay lập tức chảy ra biển.",
+        false
+      ],
+      [
+        "Nước dưới đất có thể di chuyển và bổ sung nước cho sông.",
+        true
+      ]
+    ],
+    why:
+      "Sau mưa, nước có thể đi theo " +
+      "nhiều con đường khác nhau. " +
+      "Một phần chảy trên bề mặt, " +
+      "một phần thấm xuống đất, " +
+      "một phần bốc hơi hoặc " +
+      "được sinh vật sử dụng."
+  },
+
+  // CÂU 13 - SẮP XẾP
+  {
+    type:"order",
+    level:"Tư duy hệ thống",
+    q:"Sắp xếp các giai đoạn để tạo thành một con đường tuần hoàn của nước từ biển đến lục địa và trở lại biển.",
+    items:[
+      "Nước theo sông và dòng chảy trở lại biển",
+      "Hơi nước ngưng tụ thành mây",
+      "Nước biển bốc hơi",
+      "Mưa rơi xuống lục địa"
+    ],
+    correct:[2,1,3,0],
+    why:
+      "Một con đường tuần hoàn thường gặp: " +
+      "Nước biển bốc hơi → hơi nước ngưng tụ " +
+      "tạo mây → mưa xuống lục địa → " +
+      "nước theo dòng chảy trở lại biển. " +
+      "Trong tự nhiên còn có nhiều " +
+      "con đường tuần hoàn khác."
+  },
+
+  // CÂU 14 - TÌNH HUỐNG
+  {
+    type:"mc",
+    level:"Giải quyết vấn đề",
+    q:"Hai khu đất có diện tích tương tự nhau: khu A có nhiều cây và đất thấm nước; khu B chủ yếu là bê tông. Khi có cùng một trận mưa lớn, nhận định nào hợp lí nhất?",
+    options:[
+      "Khu A chắc chắn bị ngập nặng hơn",
+      "Khu B có thể tạo dòng chảy mặt lớn hơn do khả năng thấm nước thấp",
+      "Hai khu luôn có dòng chảy mặt bằng nhau",
+      "Cây xanh khiến nước mưa không thể chạm đất"
+    ],
+    correct:1,
+    why:
+      "Đất có lớp phủ thực vật thường có khả năng " +
+      "giữ nước và hỗ trợ thấm trong nhiều điều kiện. " +
+      "Bề mặt bê tông ít thấm hơn, có thể làm " +
+      "tăng dòng chảy mặt. Mức độ ngập thực tế " +
+      "còn phụ thuộc địa hình và hệ thống thoát nước."
+  },
+
+  // CÂU 15 - TÌNH HUỐNG
+  {
+    type:"mc",
+    level:"Giải quyết vấn đề",
+    q:"Một bạn nói: “Nước mưa đã thấm xuống đất thì không còn tham gia vòng tuần hoàn nước nữa”. Em sẽ giải thích thế nào?",
+    options:[
+      "Đúng, nước dưới đất không bao giờ di chuyển",
+      "Sai, nước dưới đất vẫn có thể di chuyển, được cây hút lên hoặc bổ sung cho sông, hồ",
+      "Đúng, vì nước thấm xuống đất sẽ biến mất",
+      "Sai, vì tất cả nước dưới đất đều lập tức bốc hơi"
+    ],
+    correct:1,
+    why:
+      "Nước dưới đất vẫn là một thành phần " +
+      "của vòng tuần hoàn nước. " +
+      "Nước có thể vận động trong các tầng đất đá, " +
+      "bổ sung cho sông hồ hoặc được " +
+      "thực vật hấp thụ. Tốc độ di chuyển " +
+      "có thể rất khác nhau."
+  }
+];
+
+
+// ====================================
+// 2. TRẠNG THÁI BÀI LÀM
+// ====================================
+
+const $ = id => document.getElementById(id);
+
+const letters = ["A","B","C","D"];
+
+const state = {
+  index:0,
+  records:questions.map(()=>({
+    selection:null,
+    checked:false,
+    points:0
+  }))
+};
+
+function completedCount(){
+  return state.records.filter(
+    r=>r.checked
+  ).length;
+}
+
+function totalPoints(){
+  return state.records.reduce(
+    (sum,r)=>sum+r.points,0
+  );
+}
+
+function score100(){
+  return Math.round(
+    totalPoints()/(questions.length*10)*100
+  );
+}
+
+function canCheck(q,r){
+
+  if(q.type==="mc"){
+    return Number.isInteger(r.selection);
+  }
+
+  if(q.type==="tf"){
+    return Array.isArray(r.selection) &&
+      r.selection.every(
+        value=>value!==null
+      );
+  }
+
+  if(q.type==="order"){
+    return Array.isArray(r.selection) &&
+      r.selection.length===q.items.length;
+  }
+
+  return false;
+}
+
+
+// ====================================
+// 3. HÌNH MINH HỌA TỪNG DẠNG BÀI
+// ====================================
+
+function renderVisual(q){
+
+  const box=$("questionVisual");
+  box.replaceChildren();
+
+  // Chỉ sử dụng sơ đồ minh họa
+  // cho nhiệm vụ có nội dung phù hợp.
+
+  if(q.type!=="order"){
+    return;
+  }
+
+  const visual=document.createElement("div");
+
+  visual.className="question-visual";
+
+  const parts=[
+    ["🌊","Biển"],
+    ["☀️","Bốc hơi"],
+    ["☁️","Mây"],
+    ["🌧️","Mưa"],
+    ["🏞️","Sông"]
+  ];
+
+  parts.forEach((part,index)=>{
+
+    const item=document.createElement("div");
+    item.className="visual-item";
+
+    const emoji=document.createElement("span");
+    emoji.className="emoji";
+    emoji.textContent=part[0];
+
+    const caption=document.createElement("span");
+    caption.textContent=part[1];
+
+    item.append(emoji,caption);
+    visual.append(item);
+
+    if(index<parts.length-1){
+
+      const arrow=document.createElement("span");
+      arrow.className="visual-arrow";
+      arrow.textContent="→";
+      visual.append(arrow);
+
+    }
+  });
+
+  box.append(visual);
+}
+
+
+// ====================================
+// 4. HIỂN THỊ TRẮC NGHIỆM
+// ====================================
+
+function renderMC(q,r,area){
+
+  const grid=document.createElement("div");
+  grid.className="choices";
+
+  q.options.forEach((option,index)=>{
+
+    const button=document.createElement("button");
+
+    button.type="button";
+    button.className="choice";
+
+    if(r.selection===index){
+      button.classList.add("selected");
+    }
+
+    if(r.checked){
+
+      if(index===q.correct){
+        button.classList.add("correct");
+      }else if(r.selection===index){
+        button.classList.add("wrong");
+      }
+    }
+
+    button.disabled=r.checked;
+
+    const letter=document.createElement("span");
+
+    letter.className="option-letter";
+    letter.textContent=letters[index];
+
+    const text=document.createElement("span");
+    text.textContent=option;
+
+    button.append(letter,text);
+
+    button.onclick=()=>{
+      r.selection=index;
+      render();
+    };
+
+    grid.append(button);
+  });
+
+  area.append(grid);
+}
+
+
+// ====================================
+// 5. HIỂN THỊ ĐÚNG / SAI
+// ====================================
+
+function renderTF(q,r,area){
+
+  if(!r.selection){
+    r.selection=Array(
+      q.statements.length
+    ).fill(null);
+  }
+
+  const grid=document.createElement("div");
+  grid.className="tf-grid";
+
+  q.statements.forEach(
+    ([statement,answer],index)=>{
+
+      const row=document.createElement("div");
+      row.className="tf-row";
+
+      if(r.checked){
+        row.classList.add(
+          r.selection[index]===answer
+            ? "correct"
+            : "wrong"
+        );
+      }
+
+      const text=document.createElement("span");
+
+      text.textContent=
+        `${index+1}. ${statement}`;
+
+      const controls=document.createElement("div");
+      controls.className="tf-buttons";
+
+      [true,false].forEach(value=>{
+
+        const button=document.createElement("button");
+        button.type="button";
+
+        button.textContent=value?"Đúng":"Sai";
+
+        if(r.selection[index]===value){
+          button.classList.add("chosen");
+        }
+
+        button.disabled=r.checked;
+
+        button.onclick=()=>{
+          r.selection[index]=value;
+          render();
+        };
+
+        controls.append(button);
+      });
+
+      row.append(text,controls);
+      grid.append(row);
+    }
+  );
+
+  area.append(grid);
+}
+
+
+// ====================================
+// 6. SẮP XẾP TRÌNH TỰ
+// ====================================
+
+function renderOrder(q,r,area){
+
+  if(!r.selection){
+    r.selection=[0,1,2,3];
+  }
+
+  const grid=document.createElement("div");
+  grid.className="order-list";
+
+  r.selection.forEach((itemIndex,index)=>{
+
+    const row=document.createElement("div");
+    row.className="order-item";
+
+    const number=document.createElement("span");
+    number.className="order-no";
+    number.textContent=index+1;
+
+    const text=document.createElement("span");
+    text.className="order-text";
+    text.textContent=q.items[itemIndex];
+
+    row.append(number,text);
+
+    [-1,1].forEach(direction=>{
+
+      const button=document.createElement("button");
+      button.type="button";
+
+      button.textContent=
+        direction===-1?"↑":"↓";
+
+      button.setAttribute(
+        "aria-label",
+        direction===-1
+          ? "Di chuyển lên"
+          : "Di chuyển xuống"
+      );
+
+      button.disabled=
+        r.checked ||
+        (index===0 && direction===-1) ||
+        (
+          index===r.selection.length-1 &&
+          direction===1
+        );
+
+      button.onclick=()=>{
+
+        const target=index+direction;
+
+        [
+          r.selection[index],
+          r.selection[target]
+        ]=[
+          r.selection[target],
+          r.selection[index]
+        ];
+
+        render();
+      };
+
+      row.append(button);
+    });
+
+    grid.append(row);
+  });
+
+  area.append(grid);
+}
+
+
+// ====================================
+// 7. PHẢN HỒI SAU KHI KIỂM TRA
+// ====================================
+
+function renderFeedback(q,r){
+
+  const feedback=$("feedback");
+
+  if(!r.checked){
+    feedback.className="feedback hide";
+    feedback.replaceChildren();
+    return;
+  }
+
+  feedback.className=
+    "feedback "+(
+      Math.abs(r.points-10)<.001
+        ? "good"
+        : "bad"
+    );
+
+  feedback.replaceChildren();
+
+  const heading=document.createElement("strong");
+
+  heading.textContent=
+    Math.abs(r.points-10)<.001
+      ? "✓ Chính xác! Em đã làm rất tốt."
+      : "✦ Hãy cùng phân tích đáp án.";
+
+  const detail=document.createElement("div");
+
+  let answerText="";
+
+  if(q.type==="mc"){
+    answerText=
+      " Đáp án đúng: "+
+      letters[q.correct]+
+      ". "+q.options[q.correct]+".";
+  }
+
+  if(q.type==="tf"){
+    answerText=
+      " Đáp án theo thứ tự: "+
+      q.statements.map(
+        ([,value])=>value?"Đúng":"Sai"
+      ).join(" – ")+".";
+  }
+
+  if(q.type==="order"){
+    answerText=
+      " Trình tự đúng: "+
+      q.correct.map(
+        index=>q.items[index]
+      ).join(" → ")+".";
+  }
+
+  detail.textContent=
+    Number(r.points.toFixed(1))+
+    "/10 điểm. "+
+    q.why+
+    answerText;
+
+  feedback.append(heading,detail);
+}
+
+
+// ====================================
+// 8. HIỂN THỊ NHIỆM VỤ HIỆN TẠI
+// ====================================
+
+function render(){
+
+  const index=state.index;
+  const q=questions[index];
+  const r=state.records[index];
+
+  let typeName="TRẮC NGHIỆM";
+
+  if(q.type==="tf"){
+    typeName="ĐÚNG / SAI";
+  }
+
+  if(q.type==="order"){
+    typeName="SẮP XẾP TRÌNH TỰ";
+  }
+
+  $("qType").textContent=
+    typeName+" · "+q.level.toUpperCase();
+
+  $("qCount").textContent=
+    `Câu ${index+1}/${questions.length}`;
+
+  $("questionTitle").textContent=q.q;
+
+  $("instruction").textContent=
+    q.type==="mc"
+      ? "Chọn một phương án phù hợp nhất."
+      : q.type==="tf"
+        ? "Xác định Đúng hoặc Sai cho từng nhận định."
+        : "Sử dụng mũi tên lên và xuống để sắp xếp các giai đoạn.";
+
+  renderVisual(q);
+
+  const area=$("answerArea");
+  area.replaceChildren();
+
+  if(q.type==="mc"){
+    renderMC(q,r,area);
+  }
+
+  if(q.type==="tf"){
+    renderTF(q,r,area);
+  }
+
+  if(q.type==="order"){
+    renderOrder(q,r,area);
+  }
+
+  renderFeedback(q,r);
+
+  $("check").disabled=
+    r.checked||!canCheck(q,r);
+
+  $("check").textContent=
+    r.checked
+      ? "✓ Đã kiểm tra"
+      : "Kiểm tra đáp án";
+
+  $("prev").disabled=index===0;
+
+  $("next").disabled=
+    index===questions.length-1;
+
+  updateSidebar();
+}
+
+
+// ====================================
+// 9. CHẤM ĐIỂM
+// ====================================
+
+function checkAnswer(){
+
+  const q=questions[state.index];
+  const r=state.records[state.index];
+
+  if(r.checked||!canCheck(q,r)){
+    return;
+  }
+
+  if(q.type==="mc"){
+
+    r.points=
+      r.selection===q.correct?10:0;
+
+  }else if(q.type==="tf"){
+
+    const correctCount=q.statements.filter(
+      ([,answer],index)=>
+        r.selection[index]===answer
+    ).length;
+
+    r.points=
+      10*correctCount/q.statements.length;
+
+  }else if(q.type==="order"){
+
+    const allCorrect=r.selection.every(
+      (value,index)=>
+        value===q.correct[index]
+    );
+
+    r.points=allCorrect?10:0;
+  }
+
+  r.checked=true;
+
+  render();
+}
+
+
+// ====================================
+// 10. BẢNG NHIỆM VỤ
+// ====================================
+
+function updateSidebar(){
+
+  const count=completedCount();
+
+  $("completed").textContent=count;
+
+  $("scoreNow").textContent=score100();
+
+  $("progressFill").style.width=
+    count/questions.length*100+"%";
+
+  $("progressText").textContent=
+    `Đã hoàn thành ${count}/${questions.length} nhiệm vụ`;
+
+  $("finish").disabled=
+    count!==questions.length;
+
+  const map=$("questionMap");
+  map.replaceChildren();
+
+  questions.forEach((q,index)=>{
+
+    const button=document.createElement("button");
+    button.type="button";
+
+    button.textContent=index+1;
+
+    if(state.records[index].checked){
+      button.classList.add("done");
+    }
+
+    if(index===state.index){
+      button.classList.add("current");
+    }
+
+    button.setAttribute(
+      "aria-label",
+      `Chuyển đến câu ${index+1}`
+    );
+
+    button.onclick=()=>{
+      state.index=index;
+      render();
+    };
+
+    map.append(button);
+  });
+}
+
+
+// ====================================
+// 11. KẾT QUẢ CUỐI CÙNG
+// ====================================
+
+function showResult(){
+
+  if(completedCount()!==questions.length){
+    return;
+  }
+
+  $("learning").classList.add("hide");
+
+  $("result").classList.remove("hide");
+
+  const score=score100();
+
+  $("finalScore").textContent=
+    score+"/100";
+
+  if(score>=85){
+
+    $("resultTitle").textContent=
+      "🏆 NHÀ KHÁM PHÁ NƯỚC XUẤT SẮC!";
+
+    $("resultMessage").textContent=
+      "Em đã vận dụng tốt kiến thức về " +
+      "vòng tuần hoàn của nước và " +
+      "giải quyết được phần lớn " +
+      "các tình huống thực tế.";
+
+  }else if(score>=65){
+
+    $("resultTitle").textContent=
+      "🌍 NHÀ KHÁM PHÁ ĐẦY TRIỂN VỌNG!";
+
+    $("resultMessage").textContent=
+      "Em đã hiểu nhiều kiến thức quan trọng. " +
+      "Hãy xem lại những câu chưa chính xác " +
+      "để giải thích các hiện tượng tốt hơn.";
+
+  }else{
+
+    $("resultTitle").textContent=
+      "💧 TIẾP TỤC HÀNH TRÌNH KHÁM PHÁ!";
+
+    $("resultMessage").textContent=
+      "Hãy ôn lại quá trình bốc hơi, " +
+      "ngưng tụ, giáng thủy, dòng chảy " +
+      "và thấm, sau đó thực hiện lại thử thách.";
+  }
+
+  const review=$("review");
+  review.replaceChildren();
+
+  questions.forEach((q,index)=>{
+
+    const row=document.createElement("div");
+    row.className="review-item";
+
+    const heading=document.createElement("strong");
+
+    heading.textContent=
+      `Câu ${index+1} · `+
+      Number(
+        state.records[index].points.toFixed(1)
+      )+
+      "/10 điểm";
+
+    const body=document.createElement("div");
+
+    body.textContent=
+      q.q+" — "+q.why;
+
+    row.append(heading,body);
+    review.append(row);
+  });
+
+  $("result").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+
+// ====================================
+// 12. LÀM LẠI BÀI
+// ====================================
+
+function retryQuiz(){
+
+  state.index=0;
+
+  state.records=questions.map(()=>({
+    selection:null,
+    checked:false,
+    points:0
+  }));
+
+  $("result").classList.add("hide");
+
+  $("learning").classList.remove("hide");
+
+  render();
+
+  $("learning").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+
+// ====================================
+// 13. GẮN CÁC NÚT
+// ====================================
+
+$("check").onclick=checkAnswer;
+
+$("prev").onclick=()=>{
+  if(state.index>0){
+    state.index--;
+    render();
+  }
+};
+
+$("next").onclick=()=>{
+  if(state.index<questions.length-1){
+    state.index++;
+    render();
+  }
+};
+
+$("finish").onclick=showResult;
+
+$("retry").onclick=retryQuiz;
+
+
+// ====================================
+// 14. KHỞI ĐỘNG
+// ====================================
+
+render();
+
+</script>
+
+</body>
+</html>

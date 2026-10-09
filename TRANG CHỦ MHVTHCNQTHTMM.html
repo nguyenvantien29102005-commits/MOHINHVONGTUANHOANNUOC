@@ -1,0 +1,1131 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hành trình của nước | Mô hình học tập</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --navy: #061128;
+  --navy2: #0b2042;
+  --cyan: #4fe4fa;
+  --blue: #61a8ff;
+  --purple: #a7a0ff;
+  --white: #f7fbff;
+  --muted: #a9bfd5;
+  --border: rgba(161,215,255,.20);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Be Vietnam Pro", Arial, sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 15% 10%, #124d74 0%, transparent 42%),
+    radial-gradient(ellipse at 85% 82%, #302366 0%, transparent 42%),
+    linear-gradient(145deg, #061128, #0a1e39 55%, #080f2a);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 4px;
+}
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  width: 100%;
+  padding: 100px 6% 55px;
+  animation: appear .4s ease;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HEADER */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 72px;
+  padding: 14px 6%;
+  z-index: 20;
+  background: rgba(5,15,35,.88);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: .6px;
+}
+
+.brand-icon {
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  background: linear-gradient(135deg,#23d2ea,#5367e9);
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.nav-btn {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.065);
+  color: white;
+  padding: 11px 17px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.nav-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+/* HERO */
+
+.hero {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  align-items: center;
+  gap: 55px;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-size: clamp(32px,4.5vw,66px);
+  line-height: 1.23;
+  letter-spacing: -1.8px;
+  margin: 0;
+  font-weight: 900;
+}
+
+.gradient-text {
+  background: linear-gradient(95deg,#50eaf8,#85b7ff,#c1a4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-description {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 2;
+  max-width: 670px;
+  margin: 27px 0 35px;
+}
+
+.primary-btn {
+  border: 0;
+  padding: 17px 30px;
+  border-radius: 15px;
+  background: linear-gradient(110deg,#48def1,#7186fa);
+  color: #07172c;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 12px 35px rgba(39,191,242,.20);
+  transition: transform .25s, box-shadow .25s;
+}
+
+.primary-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 45px rgba(39,191,242,.32);
+}
+
+/* MINH HỌA CHU TRÌNH NƯỚC */
+
+.visual {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 510px;
+  margin: auto;
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center,rgba(56,159,234,.15),transparent 70%),
+    rgba(255,255,255,.035);
+}
+
+.visual::before {
+  content: "";
+  position: absolute;
+  width: 75%;
+  aspect-ratio: 1;
+  border: 2px dashed rgba(79,228,250,.25);
+  border-radius: 50%;
+  animation: rotate 40s linear infinite;
+}
+
+.visual::after {
+  content: "";
+  position: absolute;
+  width: 53%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(116,166,255,.2);
+  border-radius: 50%;
+}
+
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+.water-drop {
+  font-size: clamp(95px,15vw,180px);
+  filter: drop-shadow(0 0 50px rgba(53,191,251,.3));
+  animation: float 5s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-17px); }
+}
+
+.orbit-label {
+  position: absolute;
+  z-index: 3;
+  background: #102b4e;
+  border: 1px solid rgba(103,203,255,.35);
+  border-radius: 50px;
+  color: #eafaff;
+  padding: 10px 15px;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: 0 6px 20px #0003;
+}
+
+.label-1 { top: 16%; left: 8%; }
+.label-2 { top: 18%; right: 5%; }
+.label-3 { bottom: 17%; right: 7%; }
+.label-4 { bottom: 14%; left: 7%; }
+
+/* PAGE TITLE */
+
+.page-top {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto 38px;
+  text-align: center;
+}
+
+.page-top h2 {
+  margin: 12px 0 13px;
+  font-size: clamp(27px,3.2vw,45px);
+  line-height: 1.4;
+  font-weight: 900;
+}
+
+.page-top p {
+  max-width: 800px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin: auto;
+  font-size: 14px;
+}
+
+/* THREE MAIN CARDS */
+
+.cards {
+  width: 100%;
+  max-width: 1400px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 23px;
+  align-items: stretch;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg,rgba(25,63,104,.73),rgba(12,22,55,.88));
+  border-radius: 28px;
+  padding: 31px;
+  min-height: 355px;
+  text-align: left;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: .3s;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,var(--cyan),var(--blue),var(--purple));
+  opacity: .7;
+}
+
+.card:hover {
+  transform: translateY(-9px);
+  border-color: rgba(79,228,250,.7);
+  background: linear-gradient(160deg,rgba(28,82,127,.88),rgba(17,26,68,.95));
+  box-shadow: 0 25px 55px #0005;
+}
+
+.card-icon {
+  height: 88px;
+  width: 88px;
+  border-radius: 25px;
+  display: grid;
+  place-items: center;
+  font-size: 45px;
+  margin-bottom: 31px;
+  background: rgba(75,204,249,.11);
+  border: 1px solid rgba(104,206,255,.18);
+}
+
+.card-number {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  font-size: clamp(18px,1.7vw,24px);
+  margin: 0 0 15px;
+  line-height: 1.45;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.9;
+  margin: 0;
+}
+
+.card-action {
+  margin-top: auto;
+  padding-top: 26px;
+  font-size: 13px;
+  color: var(--cyan);
+  font-weight: 800;
+}
+
+/* STUDY RESOURCE CARDS */
+
+.resource-cards {
+  width: 100%;
+  max-width: 1250px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 22px;
+}
+
+.resource-cards.two {
+  max-width: 880px;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+}
+
+.resource {
+  min-height: 295px;
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  background: linear-gradient(160deg,rgba(28,70,111,.7),rgba(13,27,59,.9));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+  padding: 25px;
+  color: white;
+  transition: .25s;
+}
+
+.resource:hover {
+  transform: translateY(-7px);
+  border-color: var(--cyan);
+  box-shadow: 0 15px 50px rgba(12,161,240,.16);
+}
+
+.resource-icon {
+  width: 86px;
+  height: 86px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  font-size: 43px;
+  background: rgba(73,194,255,.12);
+}
+
+.resource h3 {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+  font-weight: 800;
+}
+
+.resource span {
+  font-size: 12px;
+  color: var(--cyan);
+  font-weight: 700;
+}
+
+.bottom-nav {
+  margin: 48px auto 0;
+  text-align: center;
+}
+
+.footer {
+  padding: 16px;
+  text-align: center;
+  color: #91a9c3;
+  font-size: 11px;
+  letter-spacing: .5px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 960px) {
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 32px;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .visual {
+    max-width: 350px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+
+  .card {
+    min-height: 260px;
+  }
+
+  .resource-cards {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+
+  .resource-cards.two {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 12px 4%;
+  }
+
+  .brand {
+    font-size: 12px;
+  }
+
+  .brand-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+  }
+
+  .nav-btn {
+    padding: 9px 11px;
+    font-size: 11px;
+  }
+
+  .screen {
+    padding: 95px 5% 35px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+    letter-spacing: -.8px;
+  }
+
+  .hero-description {
+    font-size: 13px;
+  }
+
+  .visual {
+    max-width: 290px;
+  }
+
+  .orbit-label {
+    font-size: 9px;
+    padding: 7px 9px;
+  }
+
+  .page-top {
+    margin-bottom: 25px;
+  }
+
+  .card {
+    min-height: 245px;
+    padding: 25px;
+  }
+
+  .card-icon {
+    width: 68px;
+    height: 68px;
+    font-size: 35px;
+    margin-bottom: 20px;
+  }
+
+  .resource {
+    min-height: 225px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="brand">
+    <div class="brand-icon">💧</div>
+    <div>HÀNH TRÌNH CỦA NƯỚC</div>
+  </div>
+
+  <div class="header-right">
+    <button class="nav-btn" id="backButton"
+      onclick="goBack()" hidden>
+      ← Quay lại
+    </button>
+
+    <button class="nav-btn" onclick="showScreen('home')">
+      ⌂ Trang chủ
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================= -->
+<!-- TRANG CHỦ LỚN -->
+<!-- ============================= -->
+
+<section id="home" class="screen active">
+
+  <div class="hero">
+
+    <div class="hero-content">
+
+      <div class="eyebrow">
+        MÔ HÌNH KHOA HỌC · KHÁM PHÁ ĐỊA LÍ
+      </div>
+
+      <h1>
+        QUÁ TRÌNH HÌNH THÀNH
+        <span class="gradient-text">MÂY VÀ MƯA</span>
+        <br>
+        &
+        <br>
+        <span class="gradient-text">
+          VÒNG TUẦN HOÀN CỦA NƯỚC
+        </span>
+      </h1>
+
+      <p class="hero-description">
+        Khám phá hành trình kỳ diệu của nước trong tự nhiên,
+        từ quá trình hình thành mây, tạo ra mưa đến vòng
+        tuần hoàn liên tục của nước trên Trái Đất.
+      </p>
+
+      <button class="primary-btn"
+        onclick="showScreen('topics')">
+        BẮT ĐẦU KHÁM PHÁ &nbsp; →
+      </button>
+
+    </div>
+
+    <div class="visual" aria-label="Minh họa vòng tuần hoàn nước">
+
+      <div class="orbit-label label-1">
+        ☀️ Bốc hơi
+      </div>
+
+      <div class="orbit-label label-2">
+        ☁️ Ngưng tụ
+      </div>
+
+      <div class="orbit-label label-3">
+        🌧️ Mưa
+      </div>
+
+      <div class="orbit-label label-4">
+        🌊 Dòng chảy
+      </div>
+
+      <div class="water-drop">💧</div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- BA CHUYÊN MỤC CHÍNH -->
+<!-- ============================= -->
+
+<section id="topics" class="screen">
+
+  <div class="page-top">
+
+    <div class="eyebrow">
+      KHÔNG GIAN KHÁM PHÁ
+    </div>
+
+    <h2>
+      KHÁM PHÁ <span class="gradient-text">
+        MÔ HÌNH KHOA HỌC
+      </span>
+    </h2>
+
+    <p>
+      Lựa chọn một trong ba nội dung để khám phá
+      kiến thức, mô hình trực quan và bài tập tương tác.
+    </p>
+
+  </div>
+
+  <div class="cards">
+
+    <button class="card" onclick="showScreen('cloud-rain')">
+
+      <div class="card-icon">🌧️</div>
+
+      <div class="card-number">CHUYÊN MỤC 01</div>
+
+      <h3>QUÁ TRÌNH HÌNH THÀNH MÂY VÀ MƯA</h3>
+
+      <p>
+        Tìm hiểu quá trình bốc hơi, ngưng tụ,
+        sự hình thành các đám mây và hiện tượng mưa.
+      </p>
+
+      <div class="card-action">
+        KHÁM PHÁ NGAY →
+      </div>
+
+    </button>
+
+
+    <button class="card" onclick="showScreen('cycle')">
+
+      <div class="card-icon">🔄</div>
+
+      <div class="card-number">CHUYÊN MỤC 02</div>
+
+      <h3>VÒNG TUẦN HOÀN CỦA NƯỚC</h3>
+
+      <p>
+        Tìm hiểu sự vận động và tuần hoàn
+        của nước giữa khí quyển, lục địa và đại dương.
+      </p>
+
+      <div class="card-action">
+        KHÁM PHÁ NGAY →
+      </div>
+
+    </button>
+
+
+    <button class="card" onclick="showScreen('integrated')">
+
+      <div class="card-icon">🌍</div>
+
+      <div class="card-number">CHUYÊN MỤC 03</div>
+
+      <h3>MÔ HÌNH TÍCH HỢP</h3>
+
+      <p>
+        Khám phá sự liên kết giữa quá trình hình thành
+        mây và mưa với vòng tuần hoàn của nước
+        trong một hệ thống hoàn chỉnh.
+      </p>
+
+      <div class="card-action">
+        KHÁM PHÁ NGAY →
+      </div>
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- CHUYÊN MỤC 1 -->
+<!-- ============================= -->
+
+<section id="cloud-rain" class="screen">
+
+  <div class="page-top">
+
+    <div class="eyebrow">CHUYÊN MỤC 01</div>
+
+    <h2>
+      QUÁ TRÌNH HÌNH THÀNH
+      <span class="gradient-text">MÂY VÀ MƯA</span>
+    </h2>
+
+    <p>
+      Lựa chọn nội dung học tập để khám phá.
+    </p>
+
+  </div>
+
+  <div class="resource-cards">
+
+    <button class="resource"
+      onclick="openLesson('cloudTheory')">
+
+      <div class="resource-icon">📖</div>
+
+      <h3>01. LÝ THUYẾT</h3>
+
+      <span>KHÁM PHÁ →</span>
+
+    </button>
+
+
+    <button class="resource"
+      onclick="openLesson('cloud3d')">
+
+      <div class="resource-icon">🌦️</div>
+
+      <h3>02. MÔ HÌNH 3D</h3>
+
+      <span>KHÁM PHÁ →</span>
+
+    </button>
+
+
+    <button class="resource"
+      onclick="openLesson('cloudQuiz')">
+
+      <div class="resource-icon">📝</div>
+
+      <h3>
+        03. CÂU HỎI TRẮC NGHIỆM
+        VÀ VẬN DỤNG
+      </h3>
+
+      <span>KHÁM PHÁ →</span>
+
+    </button>
+
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showScreen('topics')">
+      ← Quay về các chuyên mục
+    </button>
+  </div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- CHUYÊN MỤC 2 -->
+<!-- ============================= -->
+
+<section id="cycle" class="screen">
+
+  <div class="page-top">
+
+    <div class="eyebrow">CHUYÊN MỤC 02</div>
+
+    <h2>
+      <span class="gradient-text">
+        VÒNG TUẦN HOÀN CỦA NƯỚC
+      </span>
+    </h2>
+
+    <p>
+      Lựa chọn nội dung học tập để khám phá.
+    </p>
+
+  </div>
+
+  <div class="resource-cards">
+
+    <button class="resource"
+      onclick="openLesson('cycleTheory')">
+
+      <div class="resource-icon">📚</div>
+
+      <h3>01. LÝ THUYẾT</h3>
+
+      <span>KHÁM PHÁ →</span>
+
+    </button>
+
+
+    <button class="resource"
+      onclick="openLesson('cycle3d')">
+
+      <div class="resource-icon">🌍</div>
+
+      <h3>02. MÔ HÌNH 3D</h3>
+
+      <span>KHÁM PHÁ →</span>
+
+    </button>
+
+
+    <button class="resource"
+      onclick="openLesson('cycleQuiz')">
+
+      <div class="resource-icon">🧠</div>
+
+      <h3>
+        03. CÂU HỎI TRẮC NGHIỆM
+        VÀ VẬN DỤNG
+      </h3>
+
+      <span>KHÁM PHÁ →</span>
+
+    </button>
+
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showScreen('topics')">
+      ← Quay về các chuyên mục
+    </button>
+  </div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- CHUYÊN MỤC 3 -->
+<!-- ============================= -->
+
+<section id="integrated" class="screen">
+
+  <div class="page-top">
+
+    <div class="eyebrow">CHUYÊN MỤC 03</div>
+
+    <h2>
+      <span class="gradient-text">
+        MÔ HÌNH TÍCH HỢP
+      </span>
+    </h2>
+
+    <p>
+      Quá trình hình thành mây và mưa –
+      Vòng tuần hoàn của nước.
+    </p>
+
+  </div>
+
+  <div class="resource-cards two">
+
+    <button class="resource"
+      onclick="openLesson('integrated3d')">
+
+      <div class="resource-icon">🌐</div>
+
+      <h3>01. MÔ HÌNH 3D</h3>
+
+      <span>KHÁM PHÁ →</span>
+
+    </button>
+
+
+    <button class="resource"
+      onclick="openLesson('integratedQuiz')">
+
+      <div class="resource-icon">🎯</div>
+
+      <h3>
+        02. CÂU HỎI TRẮC NGHIỆM
+        VÀ BÀI TẬP VẬN DỤNG
+      </h3>
+
+      <span>KHÁM PHÁ →</span>
+
+    </button>
+
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showScreen('topics')">
+      ← Quay về các chuyên mục
+    </button>
+  </div>
+
+</section>
+
+</main>
+
+<footer class="footer">
+  HÀNH TRÌNH CỦA NƯỚC · KHÁM PHÁ – TRẢI NGHIỆM – VẬN DỤNG
+</footer>
+
+
+<!-- ============================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================= -->
+
+<script>
+
+/*
+=============================================
+KHU VỰC GẮN FILE HTML RIÊNG
+=============================================
+
+Bạn chỉ cần thay đổi tên file bên dưới.
+
+Các file HTML được đặt trong thư mục:
+hoc-lieu/
+
+Ví dụ:
+
+hoc-lieu/ly-thuyet-may-mua.html
+
+Nếu muốn dùng đường dẫn website:
+https://ten-website.com/bai-hoc.html
+
+thì thay chuỗi tương ứng bằng URL đó.
+
+=============================================
+*/
+
+const LINKS = {
+
+  // CHUYÊN MỤC 1: MÂY VÀ MƯA
+
+  cloudTheory:
+    "LÝ THUYẾT QTHTMM.html",
+
+  cloud3d:
+    "MÔ HÌNH QTHTMM.html",
+
+  cloudQuiz:
+    "VẬN DỤNG QTHTMM.html",
+
+
+  // CHUYÊN MỤC 2: VÒNG TUẦN HOÀN NƯỚC
+
+  cycleTheory:
+    "LÝ THUYẾT VTHCN.html",
+
+  cycle3d:
+    "MÔ HÌNH VTHN.html",
+
+  cycleQuiz:
+    "VẬN DỤNG VTHCN.html",
+
+
+  // CHUYÊN MỤC 3: MÔ HÌNH TÍCH HỢP
+
+  integrated3d:
+    "MÔ HÌNH TÍCH HỢP.html",
+
+  integratedQuiz:
+    "VẬN DỤNG TÍCH HỢP.html"
+
+};
+
+
+// MÀN HÌNH ĐANG HIỂN THỊ
+
+let currentScreen = "home";
+
+
+// HIỂN THỊ MÀN HÌNH
+
+function showScreen(screenId) {
+
+  const selectedScreen =
+    document.getElementById(screenId);
+
+  if (!selectedScreen) {
+    console.error("Không tìm thấy màn hình:", screenId);
+    return;
+  }
+
+  document.querySelectorAll(".screen")
+    .forEach(function(screen) {
+      screen.classList.remove("active");
+    });
+
+  selectedScreen.classList.add("active");
+
+  currentScreen = screenId;
+
+  const backButton =
+    document.getElementById("backButton");
+
+  backButton.hidden = (screenId === "home");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+
+}
+
+
+// NÚT QUAY LẠI
+
+function goBack() {
+
+  if (currentScreen === "home") {
+    return;
+  }
+
+  if (currentScreen === "topics") {
+    showScreen("home");
+  } else {
+    showScreen("topics");
+  }
+
+}
+
+
+// MỞ FILE HTML RIÊNG
+
+function openLesson(lessonKey) {
+
+  const filePath = LINKS[lessonKey];
+
+  if (!filePath) {
+    console.error(
+      "Chưa thiết lập đường dẫn học liệu:",
+      lessonKey
+    );
+    return;
+  }
+
+  /*
+    Mở trang học liệu trong cùng tab.
+
+    Khi học liệu đang mở, người dùng
+    có thể dùng nút Back của trình duyệt
+    để quay về trang chủ.
+
+    Nếu muốn mở trong tab mới, thay:
+
+    window.location.assign(filePath);
+
+    bằng:
+
+    window.open(filePath, "_blank", "noopener");
+  */
+
+  window.location.assign(filePath);
+
+}
+
+
+// KHỞI TẠO WEBSITE
+
+showScreen("home");
+
+</script>
+
+</body>
+</html>

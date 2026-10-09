@@ -1,0 +1,1367 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lý thuyết | Quá trình hình thành mây và mưa</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg:#061328;
+  --panel:#0e2442;
+  --panel2:#133354;
+  --cyan:#5be5f5;
+  --blue:#88b7ff;
+  --purple:#b2a6ff;
+  --text:#f3f9ff;
+  --muted:#b4c8db;
+  --line:rgba(145,211,255,.18);
+}
+
+* {box-sizing:border-box}
+
+html {scroll-behavior:smooth}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Be Vietnam Pro",sans-serif;
+  line-height:1.8;
+}
+
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse at 10% 0%,#16466b55,transparent 55%),
+    radial-gradient(ellipse at 100% 80%,#34225e44,transparent 55%);
+  z-index:-1;
+  pointer-events:none;
+}
+
+button, a {font:inherit}
+
+button {cursor:pointer}
+
+button:focus-visible,a:focus-visible {
+  outline:3px solid var(--cyan);
+  outline-offset:4px;
+}
+
+a {color:var(--cyan)}
+
+header {
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#061328ed;
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(18px);
+}
+
+.nav {
+  max-width:1240px;
+  margin:auto;
+  padding:13px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.logo {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-weight:900;
+  font-size:14px;
+}
+
+.logo-icon {
+  background:linear-gradient(135deg,#23d7f4,#6a7ff8);
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  font-size:24px;
+}
+
+.btn {
+  padding:11px 17px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#ffffff10;
+  color:white;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:700;
+}
+
+.btn:hover {border-color:var(--cyan)}
+
+main {
+  max-width:1240px;
+  margin:auto;
+  padding:32px 22px 90px;
+}
+
+.hero {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  gap:45px;
+  min-height:470px;
+  margin-bottom:50px;
+}
+
+.kicker {
+  text-transform:uppercase;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2.5px;
+  color:var(--cyan);
+}
+
+h1 {
+  font-size:clamp(32px,4vw,57px);
+  line-height:1.25;
+  letter-spacing:-1px;
+  margin:18px 0;
+  font-weight:900;
+}
+
+.gradient {
+  background:linear-gradient(100deg,#50eaf8,#83b3ff,#b9a3ff);
+  color:transparent;
+  background-clip:text;
+  -webkit-background-clip:text;
+}
+
+.lead {
+  font-size:15px;
+  color:var(--muted);
+  line-height:2;
+}
+
+.hero-photo {
+  height:390px;
+  overflow:hidden;
+  border-radius:30px;
+  position:relative;
+  border:1px solid var(--line);
+  box-shadow:0 30px 65px #0006;
+}
+
+.hero-photo img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.photo-label {
+  position:absolute;
+  left:15px;
+  right:15px;
+  bottom:15px;
+  background:#07182ce8;
+  padding:13px 16px;
+  border-radius:13px;
+  font-size:12px;
+  color:#e4f3ff;
+}
+
+section {margin:65px 0}
+
+.section-head {
+  margin-bottom:26px;
+}
+
+.section-head h2 {
+  font-size:clamp(23px,3vw,34px);
+  margin:8px 0;
+  line-height:1.4;
+}
+
+.section-head p {
+  color:var(--muted);
+  margin:0;
+}
+
+.panel {
+  background:linear-gradient(145deg,#143452b5,#0b1b35eb);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:30px;
+}
+
+.panel h3 {margin-top:0;color:#e7f8ff}
+
+.panel p {color:#ccdbeb}
+
+.grid-2 {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+}
+
+.grid-3 {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+
+.term {
+  color:var(--cyan);
+  font-weight:800;
+}
+
+.note {
+  background:#56d9ee13;
+  border-left:4px solid var(--cyan);
+  border-radius:0 14px 14px 0;
+  padding:15px 20px;
+  margin-top:25px;
+}
+
+.note strong {color:var(--cyan)}
+
+.big-icon {
+  font-size:44px;
+  line-height:1.3;
+  margin-bottom:13px;
+}
+
+/* QUÁ TRÌNH TƯƠNG TÁC */
+
+.step-tabs {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:11px;
+  margin-bottom:20px;
+}
+
+.step-tab {
+  padding:17px 10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  color:var(--muted);
+  background:#102743;
+  font-size:12px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.step-tab:hover,.step-tab.active {
+  background:#16496a;
+  border-color:var(--cyan);
+  color:white;
+}
+
+.stage {
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:25px;
+  background:linear-gradient(125deg,#102b4a,#0a1d36);
+  border:1px solid var(--line);
+  border-radius:25px;
+  padding:24px;
+  align-items:center;
+}
+
+.scene {
+  position:relative;
+  min-height:300px;
+  overflow:hidden;
+  border-radius:19px;
+  background:linear-gradient(#173d71,#3790b3 68%,#176281 68%,#0c446d);
+}
+
+.sun {
+  position:absolute;
+  top:20px;
+  right:26px;
+  font-size:65px;
+  filter:drop-shadow(0 0 24px #ffdf6977);
+}
+
+.cloud {
+  position:absolute;
+  top:47px;
+  left:35%;
+  font-size:105px;
+  transition:all .35s;
+}
+
+.rain {
+  position:absolute;
+  top:145px;
+  left:41%;
+  font-size:65px;
+  opacity:0;
+  transition:.3s;
+}
+
+.vapor {
+  position:absolute;
+  bottom:65px;
+  left:12%;
+  font-size:57px;
+  color:#d3f8ff;
+  opacity:.9;
+  animation:rise 3s infinite alternate;
+}
+
+@keyframes rise {
+  from {transform:translateY(15px);opacity:.35}
+  to {transform:translateY(-32px);opacity:1}
+}
+
+.land {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:55px;
+  background:linear-gradient(90deg,#104965,#176f7b,#145875);
+  border-top:4px solid #58d4c3;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 25px;
+  font-size:32px;
+}
+
+.scene[data-step="0"] .cloud {opacity:.25}
+.scene[data-step="1"] .cloud {opacity:.35}
+.scene[data-step="2"] .cloud {
+  opacity:1;
+  transform:scale(1.15);
+}
+.scene[data-step="3"] .cloud {
+  opacity:1;
+  transform:scale(1.2);
+}
+.scene[data-step="3"] .rain {opacity:1}
+.scene[data-step="2"] .vapor,
+.scene[data-step="3"] .vapor {opacity:.2}
+
+.stage-text h3 {
+  color:var(--cyan);
+  font-size:23px;
+  line-height:1.5;
+}
+
+.stage-text p {color:#c7dced}
+
+.stage-counter {
+  font-size:12px;
+  font-weight:800;
+  color:var(--purple);
+  letter-spacing:1px;
+}
+
+.stage-controls {
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.stage-controls button {
+  background:#ffffff13;
+  color:white;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:10px 16px;
+  font-weight:700;
+}
+
+/* SƠ ĐỒ */
+
+.diagram {
+  width:100%;
+  border:1px solid var(--line);
+  background:#0c2340;
+  border-radius:24px;
+  padding:18px;
+}
+
+.diagram svg {
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+.caption {
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
+  margin-top:12px;
+}
+
+/* CARD ẢNH */
+
+.image-card {
+  border-radius:22px;
+  background:#102641;
+  border:1px solid var(--line);
+  overflow:hidden;
+}
+
+.image-card img {
+  width:100%;
+  height:235px;
+  object-fit:cover;
+  display:block;
+}
+
+.image-card .inside {padding:23px}
+
+.image-card h3 {color:var(--cyan);margin-top:0}
+
+.image-card p {font-size:13px;color:#c9d9e9}
+
+/* ACCORDION */
+
+details {
+  background:#102944;
+  border:1px solid var(--line);
+  border-radius:16px;
+  margin-bottom:12px;
+  padding:16px 21px;
+}
+
+summary {
+  font-weight:800;
+  cursor:pointer;
+}
+
+details p {
+  color:var(--muted);
+  padding-top:7px;
+}
+
+.highlight {
+  border:1px solid #55def455;
+  padding:28px;
+  border-radius:22px;
+  background:linear-gradient(120deg,#164369,#162550);
+}
+
+.highlight h3 {color:var(--cyan)}
+
+.source {
+  font-size:12px;
+  color:var(--muted);
+  line-height:2.1;
+}
+
+footer {
+  text-align:center;
+  padding:28px 16px;
+  color:#94b1cb;
+  font-size:11px;
+  border-top:1px solid var(--line);
+}
+
+@media(max-width:850px) {
+  .hero,.stage,.grid-2,.grid-3 {
+    grid-template-columns:1fr;
+  }
+  .hero {gap:22px;min-height:auto}
+  .hero-photo {height:310px}
+  .step-tabs {grid-template-columns:repeat(2,1fr)}
+  .scene {min-height:270px}
+}
+
+@media(max-width:480px) {
+  main {padding:25px 15px 65px}
+  .panel {padding:21px}
+  .nav {padding:10px}
+  .logo {font-size:11px}
+  .logo-icon {width:34px;height:34px}
+  .hero-photo {height:250px}
+  h1 {font-size:32px}
+  .step-tab {font-size:11px}
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">💧</div>
+      <span>HÀNH TRÌNH CỦA NƯỚC</span>
+    </div>
+    <a href="../index.html" class="btn">
+      ← TRANG CHỦ
+    </a>
+  </nav>
+</header>
+
+<main>
+
+<!-- HERO -->
+
+<div class="hero">
+  <div>
+    <div class="kicker">
+      KHÔNG GIAN KIẾN THỨC · ĐỊA LÍ
+    </div>
+
+    <h1>
+      QUÁ TRÌNH HÌNH THÀNH
+      <span class="gradient">MÂY VÀ MƯA</span>
+    </h1>
+
+    <p class="lead">
+      Tại sao trên bầu trời xuất hiện những đám mây?
+      Vì sao có những ngày mây trắng nhưng không mưa,
+      trong khi những ngày khác lại xuất hiện mưa lớn?
+      Hãy cùng khám phá hành trình của hơi nước
+      từ mặt đất đến bầu trời.
+    </p>
+
+    <a class="btn" href="#khai-niem">
+      BẮT ĐẦU TÌM HIỂU ↓
+    </a>
+  </div>
+
+  <div class="hero-photo">
+    <img
+      src="https://s3.amazonaws.com/s3-east-testmedia-noaa.woc.noaa.gov/dam/Photos/legacy/pl23_con00019.jpg"
+      alt="Đám mây dông lớn có màn mưa đang rơi"
+      loading="eager"
+    >
+    <div class="photo-label">
+      🌧️ Hình ảnh thực tế: Mây dông và màn mưa
+      <br>
+      Nguồn ảnh: NOAA
+    </div>
+  </div>
+</div>
+
+
+<!-- 1. KHÁI NIỆM -->
+
+<section id="khai-niem">
+
+  <div class="section-head">
+    <div class="kicker">PHẦN 01 · KIẾN THỨC CƠ BẢN</div>
+    <h2>Mây và mưa là gì?</h2>
+    <p>Tìm hiểu hai hiện tượng quen thuộc trong tự nhiên.</p>
+  </div>
+
+  <div class="grid-2">
+
+    <article class="panel">
+      <div class="big-icon">☁️</div>
+      <h3>1. Mây là gì?</h3>
+
+      <p>
+        <span class="term">Mây</span> là tập hợp
+        những giọt nước rất nhỏ, các tinh thể băng
+        hoặc cả hai, tồn tại lơ lửng trong khí quyển.
+      </p>
+
+      <p>
+        Mây thường hình thành khi không khí chứa hơi nước
+        được làm lạnh đến mức thích hợp,
+        khiến hơi nước ngưng tụ thành những giọt nước nhỏ
+        hoặc hình thành tinh thể băng.
+      </p>
+
+      <div class="note">
+        <strong>Ghi nhớ:</strong>
+        Mây không đơn thuần là hơi nước ở thể khí.
+        Chúng gồm những hạt nước nhỏ hoặc tinh thể băng
+        mà chúng ta có thể nhìn thấy.
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="big-icon">🌧️</div>
+      <h3>2. Mưa là gì?</h3>
+
+      <p>
+        <span class="term">Mưa</span> là hiện tượng
+        những giọt nước từ các đám mây rơi xuống
+        bề mặt Trái Đất.
+      </p>
+
+      <p>
+        Khi các giọt nước trong mây lớn dần,
+        chúng có thể rơi xuống do trọng lực.
+        Nếu đủ lớn và không bốc hơi hết
+        trên đường rơi, chúng sẽ đến mặt đất
+        và tạo thành mưa.
+      </p>
+
+      <div class="note">
+        <strong>Ghi nhớ:</strong>
+        Không phải đám mây nào cũng gây mưa.
+        Các giọt nước phải phát triển đủ lớn
+        và có điều kiện thích hợp để rơi tới mặt đất.
+      </div>
+    </article>
+
+  </div>
+</section>
+
+
+<!-- 2. BỐN GIAI ĐOẠN -->
+
+<section id="qua-trinh">
+
+  <div class="section-head">
+    <div class="kicker">PHẦN 02 · KHÁM PHÁ TƯƠNG TÁC</div>
+    <h2>Bốn giai đoạn hình thành mây và mưa</h2>
+    <p>
+      Bấm vào từng giai đoạn để xem hình minh họa
+      và lời giải thích.
+    </p>
+  </div>
+
+  <div class="step-tabs">
+    <button class="step-tab active"
+      onclick="setStep(0)">☀️ 01. Bốc hơi</button>
+    <button class="step-tab"
+      onclick="setStep(1)">↗ 02. Không khí đi lên</button>
+    <button class="step-tab"
+      onclick="setStep(2)">☁️ 03. Ngưng tụ</button>
+    <button class="step-tab"
+      onclick="setStep(3)">🌧️ 04. Tạo mưa</button>
+  </div>
+
+  <div class="stage">
+
+    <div class="scene" id="scene" data-step="0"
+      role="img"
+      aria-label="Mô phỏng minh họa các giai đoạn hình thành mây và mưa">
+
+      <div class="sun">☀️</div>
+      <div class="cloud">☁️</div>
+      <div class="rain">🌧️</div>
+      <div class="vapor">♨️ ↑</div>
+
+      <div class="land">
+        <span>🌳</span>
+        <span>🌊</span>
+        <span>🌳</span>
+      </div>
+    </div>
+
+    <div class="stage-text" aria-live="polite">
+      <div class="stage-counter" id="stageNumber">
+        GIAI ĐOẠN 01 / 04
+      </div>
+
+      <h3 id="stageTitle">Sự bốc hơi</h3>
+
+      <p id="stageDesc">
+        Dưới tác động của năng lượng Mặt Trời,
+        nước từ sông, hồ, biển và bề mặt đất
+        chuyển từ thể lỏng sang thể khí,
+        tạo thành hơi nước hòa vào không khí.
+      </p>
+
+      <div class="stage-controls">
+        <button onclick="prevStep()">← Trước</button>
+        <button onclick="nextStep()">Tiếp theo →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note">
+    <strong>Chuỗi quá trình cơ bản:</strong>
+    Bốc hơi → Không khí ẩm đi lên và lạnh dần
+    → Hơi nước ngưng tụ, hình thành mây
+    → Các hạt nước phát triển lớn và tạo mưa.
+  </div>
+
+</section>
+
+
+<!-- 3. SƠ ĐỒ KHOA HỌC -->
+
+<section id="so-do">
+
+  <div class="section-head">
+    <div class="kicker">PHẦN 03 · SƠ ĐỒ TRỰC QUAN</div>
+    <h2>Quan sát sơ đồ hình thành mây và mưa</h2>
+    <p>
+      Sơ đồ khái quát hóa một trường hợp
+      không khí ẩm bốc lên, tạo mây và gây mưa.
+    </p>
+  </div>
+
+  <div class="diagram">
+
+    <svg viewBox="0 0 1000 520"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Sơ đồ bốc hơi, không khí đi lên, ngưng tụ tạo mây và mưa">
+
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#12376a"/>
+          <stop offset="100%" stop-color="#51a5c8"/>
+        </linearGradient>
+
+        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1cb8df"/>
+          <stop offset="100%" stop-color="#125280"/>
+        </linearGradient>
+
+        <marker id="arrow"
+          markerWidth="10" markerHeight="10"
+          refX="7" refY="3"
+          orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z"
+            fill="#f8d17c"/>
+        </marker>
+      </defs>
+
+      <rect width="1000" height="520"
+        fill="url(#sky)" rx="18"/>
+
+      <!-- MẶT TRỜI -->
+      <circle cx="135" cy="100" r="49"
+        fill="#ffdf75"/>
+
+      <g stroke="#ffe49b"
+        stroke-width="7"
+        stroke-linecap="round">
+        <path d="M135 20 V36"/>
+        <path d="M135 164 V180"/>
+        <path d="M55 100 H72"/>
+        <path d="M199 100 H216"/>
+        <path d="M80 45 L92 57"/>
+        <path d="M179 145 L191 157"/>
+        <path d="M80 155 L92 143"/>
+        <path d="M179 55 L191 43"/>
+      </g>
+
+      <!-- MÂY -->
+      <g fill="#f2f8ff">
+        <ellipse cx="565" cy="150" rx="158" ry="60"/>
+        <circle cx="486" cy="125" r="62"/>
+        <circle cx="562" cy="91" r="80"/>
+        <circle cx="654" cy="130" r="65"/>
+      </g>
+
+      <!-- NÚI -->
+      <path d="M670 430 L830 222 L995 430 Z"
+        fill="#285e70"/>
+      <path d="M777 292 L830 222 L886 296
+               L853 279 L829 290 L810 276 Z"
+        fill="#dcecf5"/>
+
+      <!-- BIỂN -->
+      <rect x="0" y="430" width="1000" height="90"
+        fill="url(#sea)"/>
+
+      <path d="M0 452 Q50 430 100 452
+               T200 452 T300 452 T400 452
+               T500 452 T600 452 T700 452
+               T800 452 T900 452 T1000 452"
+        fill="none" stroke="#b4f5ff"
+        stroke-width="4" opacity=".7"/>
+
+      <!-- MŨI TÊN BỐC HƠI -->
+      <g fill="none" stroke="#f8d17c"
+        stroke-width="8" stroke-linecap="round"
+        marker-end="url(#arrow)">
+        <path d="M170 418 Q130 290 265 210"/>
+        <path d="M270 420 Q240 315 345 230"/>
+      </g>
+
+      <!-- MƯA -->
+      <g stroke="#b5f4ff"
+        stroke-width="7"
+        stroke-linecap="round">
+        <path d="M500 224 L485 281"/>
+        <path d="M560 220 L545 282"/>
+        <path d="M620 226 L605 287"/>
+        <path d="M680 210 L663 273"/>
+        <path d="M530 311 L515 368"/>
+        <path d="M600 316 L583 373"/>
+        <path d="M655 307 L640 363"/>
+      </g>
+
+      <!-- NHÃN -->
+      <g font-size="23"
+        font-weight="700"
+        font-family="Arial, sans-serif">
+
+        <text x="52" y="215" fill="#fff5d1">
+          1. Bốc hơi
+        </text>
+
+        <text x="214" y="310" fill="#ffffff">
+          2. Không khí ẩm đi lên
+        </text>
+
+        <text x="435" y="45" fill="#ffffff">
+          3. Ngưng tụ tạo mây
+        </text>
+
+        <text x="480" y="403" fill="#ffffff">
+          4. Mưa
+        </text>
+
+        <text x="130" y="493" fill="#ffffff">
+          BIỂN – SÔNG – HỒ
+        </text>
+
+        <text x="819" y="398" fill="#ffffff">
+          NÚI
+        </text>
+
+      </g>
+
+    </svg>
+
+    <p class="caption">
+      Sơ đồ minh họa đơn giản:
+      quá trình hình thành mây và mưa trong tự nhiên.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- 4. ĐIỀU KIỆN HÌNH THÀNH -->
+
+<section id="dieu-kien">
+
+  <div class="section-head">
+    <div class="kicker">PHẦN 04 · GIẢI THÍCH HIỆN TƯỢNG</div>
+    <h2>Những điều kiện cần để hình thành mây</h2>
+  </div>
+
+  <div class="grid-3">
+
+    <article class="panel">
+      <div class="big-icon">💧</div>
+      <h3>1. Có hơi nước</h3>
+      <p>
+        Hơi nước đến từ sự bốc hơi của nước
+        tại sông, hồ, biển, đất ẩm
+        và quá trình thoát hơi nước của thực vật.
+      </p>
+    </article>
+
+    <article class="panel">
+      <div class="big-icon">🌡️</div>
+      <h3>2. Không khí đạt trạng thái bão hòa</h3>
+      <p>
+        Khi không khí ẩm lạnh đi đủ mức,
+        hơi nước có thể ngưng tụ.
+        Không khí đi lên và giãn nở thường
+        là một nguyên nhân dẫn tới sự lạnh đi đó.
+      </p>
+    </article>
+
+    <article class="panel">
+      <div class="big-icon">✨</div>
+      <h3>3. Có hạt nhân ngưng tụ</h3>
+      <p>
+        Những hạt rất nhỏ trong khí quyển,
+        chẳng hạn như bụi hoặc muối biển,
+        có thể là nơi hơi nước ngưng tụ
+        để hình thành các giọt nước mây.
+      </p>
+    </article>
+
+  </div>
+
+  <div class="note">
+    <strong>Kiến thức mở rộng:</strong>
+    Không khí có thể được nâng lên do mặt đất nóng,
+    do gió gặp núi hoặc do các khối khí tương tác
+    với nhau. Vì vậy, mây và mưa có thể hình thành
+    trong nhiều điều kiện thời tiết khác nhau.
+  </div>
+
+</section>
+
+
+<!-- 5. HÌNH THÀNH MƯA -->
+
+<section id="tao-mua">
+
+  <div class="section-head">
+    <div class="kicker">PHẦN 05 · KIẾN THỨC CHUYÊN SÂU</div>
+    <h2>Vì sao mây có thể tạo thành mưa?</h2>
+  </div>
+
+  <div class="grid-2">
+
+    <article class="panel">
+      <div class="big-icon">💦</div>
+      <h3>Giọt nước lớn dần</h3>
+      <p>
+        Trong các đám mây ấm, những giọt nước nhỏ
+        chuyển động với tốc độ khác nhau, va chạm
+        và có thể kết hợp thành những giọt lớn hơn.
+      </p>
+      <p>
+        Khi đủ lớn, chúng có thể rơi khỏi mây
+        và trở thành những hạt mưa.
+      </p>
+    </article>
+
+    <article class="panel">
+      <div class="big-icon">❄️</div>
+      <h3>Tinh thể băng phát triển</h3>
+      <p>
+        Trong những đám mây lạnh,
+        tinh thể băng có thể lớn dần
+        và rơi xuống.
+      </p>
+      <p>
+        Nếu đi qua lớp không khí đủ ấm,
+        các hạt băng hoặc bông tuyết có thể tan,
+        tạo thành những giọt mưa.
+      </p>
+    </article>
+
+  </div>
+
+  <div class="note">
+    <strong>Cần phân biệt:</strong>
+    Ngưng tụ tạo thành các giọt nước mây rất nhỏ,
+    nhưng chưa nhất thiết tạo ra mưa.
+    Các hạt nước hoặc tinh thể băng còn cần
+    phát triển đến kích thước phù hợp.
+  </div>
+
+</section>
+
+
+<!-- 6. CÁC LOẠI MƯA -->
+
+<section id="loai-mua">
+
+  <div class="section-head">
+    <div class="kicker">PHẦN 06 · PHÂN LOẠI</div>
+    <h2>Ba cơ chế hình thành mưa thường gặp</h2>
+    <p>
+      Các loại mưa dưới đây được phân chia
+      theo cơ chế khiến không khí ẩm đi lên.
+    </p>
+  </div>
+
+  <div class="grid-3">
+
+    <article class="panel">
+      <div class="big-icon">☀️</div>
+      <h3>Mưa đối lưu</h3>
+      <p>
+        Mặt đất bị đốt nóng, làm lớp không khí
+        gần mặt đất nóng lên và có thể bốc lên cao.
+      </p>
+      <p>
+        Không khí đi lên, lạnh dần và ngưng tụ,
+        hình thành mây. Khi các hạt nước phát triển
+        đủ lớn, mưa có thể xuất hiện.
+      </p>
+      <div class="note">
+        <strong>Ví dụ:</strong>
+        Những cơn mưa rào vào buổi chiều
+        trong ngày nóng ẩm.
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="big-icon">⛰️</div>
+      <h3>Mưa địa hình</h3>
+      <p>
+        Khi gió mang hơi ẩm gặp sườn núi,
+        không khí bị buộc phải đi lên.
+      </p>
+      <p>
+        Trong quá trình đi lên,
+        không khí lạnh dần, hơi nước ngưng tụ
+        tạo mây và có thể gây mưa.
+      </p>
+      <div class="note">
+        <strong>Đặc điểm:</strong>
+        Sườn đón gió ẩm thường có điều kiện
+        nhận lượng mưa lớn hơn sườn khuất gió.
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="big-icon">🌬️</div>
+      <h3>Mưa frông</h3>
+      <p>
+        Khi các khối khí có đặc tính khác nhau
+        gặp nhau ở vùng frông,
+        không khí ấm có thể bị nâng lên.
+      </p>
+      <p>
+        Không khí ấm ẩm đi lên, lạnh dần,
+        tạo mây và có thể sinh mưa.
+      </p>
+      <div class="note">
+        <strong>Đặc điểm:</strong>
+        Có thể tạo ra những khu vực mưa
+        trên phạm vi rộng.
+      </div>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- 7. VAI TRÒ VÀ TÁC ĐỘNG -->
+
+<section id="vai-tro">
+
+  <div class="section-head">
+    <div class="kicker">PHẦN 07 · LIÊN HỆ THỰC TIỄN</div>
+    <h2>Vai trò và tác động của mưa</h2>
+  </div>
+
+  <div class="grid-2">
+
+    <article class="panel">
+      <div class="big-icon">🌱</div>
+      <h3>Vai trò của mưa</h3>
+      <p>
+        Mưa bổ sung nước cho sông, hồ,
+        đất và nguồn nước dưới đất;
+        cung cấp nước cho cây trồng,
+        sinh vật và nhiều hoạt động của con người.
+      </p>
+      <p>
+        Mưa cũng là một thành phần quan trọng
+        trong vòng tuần hoàn của nước trên Trái Đất.
+      </p>
+    </article>
+
+    <article class="panel">
+      <div class="big-icon">⚠️</div>
+      <h3>Tác động của mưa lớn</h3>
+      <p>
+        Mưa lớn kéo dài hoặc mưa với cường độ rất cao
+        có thể gây ngập lụt, lũ quét,
+        xói mòn đất và sạt lở đất
+        khi kết hợp với những điều kiện bất lợi khác.
+      </p>
+      <p>
+        Vì vậy, việc theo dõi thông tin dự báo
+        và cảnh báo thời tiết rất cần thiết.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- 8. CÂU HỎI GỢI MỞ -->
+
+<section id="van-dung">
+
+  <div class="section-head">
+    <div class="kicker">PHẦN 08 · SUY NGẪM VÀ VẬN DỤNG</div>
+    <h2>Em có biết?</h2>
+    <p>
+      Hãy suy nghĩ trước khi bấm mở lời giải thích.
+    </p>
+  </div>
+
+  <details>
+    <summary>
+      1. Tại sao có những đám mây nhưng trời không mưa?
+    </summary>
+    <p>
+      Vì những giọt nước hoặc tinh thể băng
+      trong mây có thể chưa phát triển đủ lớn
+      để tạo thành hạt mưa. Ngoài ra,
+      hạt mưa có thể bốc hơi trước khi tới mặt đất.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      2. Vì sao những ngày nóng ẩm dễ xuất hiện mưa rào?
+    </summary>
+    <p>
+      Mặt đất nóng có thể làm không khí gần mặt đất
+      nóng lên và đi lên. Nếu không khí có đủ hơi nước
+      và điều kiện khí quyển phù hợp,
+      mây đối lưu phát triển và có thể gây mưa rào.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      3. Tại sao không phải mây nào cũng có màu trắng?
+    </summary>
+    <p>
+      Màu sắc của mây phụ thuộc vào độ dày,
+      lượng ánh sáng xuyên qua mây
+      và điều kiện chiếu sáng.
+      Mây dày có thể có phần đáy trông tối hơn,
+      nhưng mây tối màu không nhất thiết
+      sẽ gây mưa.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      4. Vì sao vùng núi có thể có mưa lớn?
+    </summary>
+    <p>
+      Khi gió mang không khí ẩm gặp núi,
+      khối khí bị đẩy lên cao, lạnh đi
+      và có thể tạo mây, gây mưa.
+      Lượng mưa còn phụ thuộc vào hướng gió,
+      độ ẩm và đặc điểm địa hình.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      5. Mây và mưa có liên hệ gì với vòng tuần hoàn nước?
+    </summary>
+    <p>
+      Hơi nước được đưa vào khí quyển thông qua
+      quá trình bốc hơi và thoát hơi nước.
+      Sự ngưng tụ tạo mây; mưa đưa nước
+      từ khí quyển trở lại bề mặt Trái Đất.
+      Sau đó, nước tiếp tục di chuyển,
+      thấm xuống đất hoặc bốc hơi.
+    </p>
+  </details>
+
+</section>
+
+
+<!-- 9. TỔNG KẾT -->
+
+<section id="tong-ket">
+
+  <div class="highlight">
+    <div class="kicker">TỔNG KẾT KIẾN THỨC</div>
+    <h2>Em cần ghi nhớ điều gì?</h2>
+
+    <h3>☀️ 1. Bốc hơi</h3>
+    <p>
+      Nước chuyển từ thể lỏng sang thể khí
+      và hòa vào không khí.
+    </p>
+
+    <h3>↗ 2. Không khí ẩm đi lên</h3>
+    <p>
+      Khi không khí đi lên và giãn nở,
+      nhiệt độ thường giảm.
+    </p>
+
+    <h3>☁️ 3. Ngưng tụ tạo mây</h3>
+    <p>
+      Khi đạt điều kiện thích hợp,
+      hơi nước ngưng tụ thành giọt nhỏ
+      hoặc hình thành tinh thể băng.
+    </p>
+
+    <h3>🌧️ 4. Hình thành mưa</h3>
+    <p>
+      Những hạt nước hoặc tinh thể băng
+      phát triển đủ lớn, rơi xuống
+      và có thể tạo thành mưa.
+    </p>
+
+    <div class="note">
+      <strong>Kết luận:</strong>
+      Mây hình thành chủ yếu khi không khí ẩm
+      lạnh đi đến mức hơi nước có thể ngưng tụ.
+      Mưa xuất hiện khi các hạt nước trong mây
+      phát triển đủ lớn và rơi tới mặt đất.
+    </div>
+  </div>
+
+</section>
+
+
+<!-- 10. NGUỒN -->
+
+<section id="tai-lieu">
+
+  <div class="section-head">
+    <div class="kicker">TÀI LIỆU THAM KHẢO</div>
+    <h2>Nguồn kiến thức khoa học</h2>
+  </div>
+
+  <div class="panel source">
+
+    <p>
+      1. NOAA – National Oceanic and Atmospheric
+      Administration. How Clouds Form.
+      <br>
+      <a href="https://www.noaa.gov/jetstream/clouds/how-clouds-form"
+         target="_blank" rel="noopener noreferrer">
+        Xem tài liệu NOAA
+      </a>
+    </p>
+
+    <p>
+      2. NOAA – JetStream. Precipitation.
+      <br>
+      <a href="https://www.noaa.gov/jetstream/atmosphere/precipitation"
+         target="_blank" rel="noopener noreferrer">
+        Xem tài liệu về giáng thủy
+      </a>
+    </p>
+
+    <p>
+      3. UK Met Office. Rain.
+      <br>
+      <a href="https://weather.metoffice.gov.uk/learn-about/weather/types-of-weather/rain"
+         target="_blank" rel="noopener noreferrer">
+        Xem tài liệu về các loại mưa
+      </a>
+    </p>
+
+  </div>
+
+</section>
+
+<div style="text-align:center">
+  <a class="btn" href="#khai-niem">
+    ↑ Quay lên đầu bài
+  </a>
+  &nbsp;
+  <a class="btn" href="../index.html">
+    ⌂ Về trang chủ
+  </a>
+</div>
+
+</main>
+
+<footer>
+  HÀNH TRÌNH CỦA NƯỚC
+  <br>
+  KHÁM PHÁ · HIỂU BIẾT · VẬN DỤNG
+</footer>
+
+
+<script>
+"use strict";
+
+/*
+  Nội dung tương tác của 4 giai đoạn
+  Có thể chỉnh sửa lời giải thích tại đây.
+*/
+
+const steps = [
+  {
+    title:"Giai đoạn 1 – Sự bốc hơi",
+    description:
+      "Dưới tác động của năng lượng Mặt Trời, " +
+      "nước trên bề mặt biển, sông, hồ và đất ẩm " +
+      "có thể chuyển từ thể lỏng sang thể khí. " +
+      "Hơi nước hòa vào không khí và không nhìn thấy trực tiếp."
+  },
+  {
+    title:"Giai đoạn 2 – Không khí ẩm đi lên",
+    description:
+      "Không khí ẩm có thể được nâng lên do đối lưu, " +
+      "do gặp địa hình núi hoặc do các khối khí tương tác. " +
+      "Khi đi lên, không khí giãn nở và thường lạnh dần. " +
+      "Nếu lạnh đủ mức, không khí đạt trạng thái bão hòa."
+  },
+  {
+    title:"Giai đoạn 3 – Ngưng tụ, hình thành mây",
+    description:
+      "Khi đạt điều kiện thích hợp, hơi nước ngưng tụ " +
+      "trên các hạt nhân rất nhỏ trong khí quyển, " +
+      "tạo thành các giọt nước mây. " +
+      "Trong môi trường đủ lạnh, các tinh thể băng " +
+      "cũng có thể hình thành. Tập hợp những hạt nhỏ " +
+      "này tạo nên đám mây mà chúng ta nhìn thấy."
+  },
+  {
+    title:"Giai đoạn 4 – Hình thành mưa",
+    description:
+      "Các giọt nước trong mây có thể va chạm và " +
+      "kết hợp với nhau để lớn dần. " +
+      "Trong mây lạnh, các tinh thể băng cũng có thể " +
+      "phát triển và rơi xuống. " +
+      "Khi các hạt đủ lớn, rơi xuống và tồn tại " +
+      "dưới dạng nước lỏng khi tới mặt đất, " +
+      "chúng tạo thành mưa."
+  }
+];
+
+let currentStep = 0;
+
+const stageNumber =
+  document.getElementById("stageNumber");
+
+const stageTitle =
+  document.getElementById("stageTitle");
+
+const stageDesc =
+  document.getElementById("stageDesc");
+
+const scene =
+  document.getElementById("scene");
+
+const tabs =
+  document.querySelectorAll(".step-tab");
+
+function setStep(index) {
+  if(index < 0 || index >= steps.length) return;
+
+  currentStep = index;
+
+  stageNumber.textContent =
+    "GIAI ĐOẠN 0" + (index + 1) + " / 04";
+
+  stageTitle.textContent = steps[index].title;
+
+  stageDesc.textContent = steps[index].description;
+
+  scene.dataset.step = String(index);
+
+  tabs.forEach((tab, i) => {
+    const active = i === index;
+    tab.classList.toggle("active", active);
+    tab.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function nextStep() {
+  setStep((currentStep + 1) % steps.length);
+}
+
+function prevStep() {
+  setStep((currentStep - 1 + steps.length) % steps.length);
+}
+
+setStep(0);
+</script>
+
+</body>
+</html>

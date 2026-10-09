@@ -1,0 +1,3075 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô hình 3D tích hợp - Hành trình của nước</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #06172d;
+  --panel: rgba(6, 26, 50, .91);
+  --cyan: #5ce9f8;
+  --blue: #8fbaff;
+  --purple: #a7a0ff;
+  --white: #f5fbff;
+  --muted: #bfd7e5;
+  --border: rgba(120, 222, 255, .3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Be Vietnam Pro", sans-serif;
+  color: var(--white);
+  background: var(--bg);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: #174462;
+  color: white;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+button:hover {
+  background: #246b88;
+  border-color: var(--cyan);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+button.active {
+  background: linear-gradient(
+    120deg,
+    #46e5ee,
+    #9ea8ff
+  );
+  color: #061b34;
+  border-color: transparent;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* KHÔNG GIAN 3D */
+
+#scene3d {
+  position: fixed;
+  inset: 0;
+  touch-action: none;
+}
+
+#scene3d canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* GIAO DIỆN KÍNH */
+
+.glass {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 15px 40px #00132670;
+  border-radius: 20px;
+}
+
+/* HEADER */
+
+.header {
+  position: absolute;
+  z-index: 10;
+  top: 13px;
+  left: 15px;
+  right: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.header > * {
+  pointer-events: auto;
+}
+
+.brand {
+  padding: 16px 21px;
+  max-width: 610px;
+}
+
+.brand small {
+  color: var(--cyan);
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: 1.6px;
+}
+
+.brand h1 {
+  font-size: clamp(17px, 2vw, 24px);
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
+.brand p {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 0;
+}
+
+.top-actions {
+  padding: 7px;
+  display: flex;
+  gap: 7px;
+}
+
+.top-actions a {
+  color: white;
+  text-decoration: none;
+  background: #174462;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 10px 12px;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+/* BẢNG KIẾN THỨC */
+
+.info-panel {
+  position: absolute;
+  z-index: 9;
+  top: 145px;
+  left: 15px;
+  width: 335px;
+  max-height: calc(100vh - 275px);
+  overflow-y: auto;
+  padding: 21px;
+}
+
+.info-panel small {
+  color: var(--cyan);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.info-panel h2 {
+  font-size: 19px;
+  line-height: 1.5;
+  margin: 11px 0;
+}
+
+.info-panel p {
+  color: #d3e9f5;
+  font-size: 12px;
+  line-height: 1.95;
+  margin: 0;
+}
+
+.close-info {
+  position: absolute;
+  right: 9px;
+  top: 9px;
+  padding: 5px 10px;
+}
+
+/* TRUNG TÂM ĐIỀU KHIỂN */
+
+.controls {
+  position: absolute;
+  z-index: 9;
+  top: 140px;
+  right: 15px;
+  width: 305px;
+  padding: 18px;
+  max-height: calc(100vh - 275px);
+  overflow-y: auto;
+}
+
+.controls h3 {
+  font-size: 14px;
+  margin: 0 0 16px;
+}
+
+.control {
+  margin: 17px 0;
+}
+
+.control label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+
+.control output {
+  color: var(--cyan);
+  font-weight: 900;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #43dfe8;
+  cursor: pointer;
+}
+
+/* CHẠY TỰ ĐỘNG */
+
+.auto-box {
+  border: 1px solid #6be9ff77;
+  background: linear-gradient(
+    130deg,
+    rgba(20, 100, 130, .5),
+    rgba(75, 60, 155, .38)
+  );
+  border-radius: 17px;
+  padding: 14px;
+}
+
+.auto-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.auto-head strong {
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.progress-track {
+  height: 11px;
+  background: #06182d;
+  border-radius: 100px;
+  overflow: hidden;
+  margin: 14px 0 8px;
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #37e1ec,
+    #a6a0ff
+  );
+}
+
+.progress-text {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+/* NGÀY ĐÊM */
+
+.time-box {
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: #ffffff09;
+  padding: 13px;
+  margin-top: 15px;
+}
+
+.time-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.time-presets button {
+  font-size: 9px;
+  padding: 8px 3px;
+}
+
+.toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.toggle-grid button {
+  font-size: 10px;
+  padding: 9px 5px;
+}
+
+/* THANH TIẾN TRÌNH */
+
+.timeline {
+  position: absolute;
+  z-index: 10;
+  bottom: 13px;
+  left: 15px;
+  right: 15px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.stage-buttons {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.stage-buttons button {
+  font-size: 9px;
+  line-height: 1.5;
+  min-height: 49px;
+  padding: 7px 3px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.tip {
+  position: absolute;
+  z-index: 4;
+  bottom: 100px;
+  left: 15px;
+  color: #e2f7ff;
+  font-size: 10px;
+  padding: 10px 13px;
+  background: #0a2846df;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+#loading {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #06172d;
+  z-index: 100;
+  color: var(--cyan);
+  text-align: center;
+  padding: 25px;
+  font-weight: 900;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+  .brand {
+    max-width: 65%;
+    padding: 10px;
+  }
+
+  .brand h1 {
+    font-size: 13px;
+  }
+
+  .brand p {
+    display: none;
+  }
+
+  .top-actions {
+    flex-direction: column;
+  }
+
+  .top-actions a,
+  .top-actions button {
+    padding: 7px;
+    font-size: 9px;
+  }
+
+  .info-panel {
+    top: 118px;
+    left: 8px;
+    width: 245px;
+    padding: 12px;
+    max-height: 140px;
+  }
+
+  .info-panel h2 {
+    font-size: 14px;
+  }
+
+  .info-panel p {
+    font-size: 10px;
+  }
+
+  .controls {
+    top: auto;
+    bottom: 132px;
+    right: 8px;
+    width: 250px;
+    max-height: 210px;
+    padding: 11px;
+  }
+
+  .timeline {
+    grid-template-columns: 1fr;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    padding: 8px;
+  }
+
+  .stage-buttons button {
+    font-size: 8px;
+    min-height: 37px;
+  }
+
+  .navigation {
+    justify-content: center;
+  }
+
+  .navigation button {
+    padding: 7px 11px;
+  }
+
+  .tip {
+    display: none;
+  }
+}
+
+@media (max-width: 590px) {
+
+  .info-panel {
+    width: calc(100% - 16px);
+    max-height: 112px;
+  }
+
+  .controls {
+    width: calc(100% - 16px);
+    bottom: 122px;
+    max-height: 155px;
+  }
+
+  .stage-buttons {
+    gap: 2px;
+  }
+
+  .stage-buttons button {
+    font-size: 7px;
+    padding: 5px 1px;
+  }
+
+  .toggle-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .toggle-grid button {
+    font-size: 8px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- KHÔNG GIAN 3D -->
+<div id="scene3d"></div>
+
+<!-- HEADER -->
+<header class="header">
+
+  <div class="brand glass">
+    <small>
+      KHÁM PHÁ ĐỊA LÍ 6 · MÔ HÌNH TÍCH HỢP 3D
+    </small>
+
+    <h1>
+      HÀNH TRÌNH CỦA NƯỚC:
+      TỪ MÂY, MƯA ĐẾN VÒNG TUẦN HOÀN
+    </h1>
+
+    <p>
+      8 giai đoạn · Xoay 360° · Tương tác trực tiếp
+    </p>
+  </div>
+
+  <div class="top-actions glass">
+
+    <a href="../index.html">
+      ⌂ Trang chủ
+    </a>
+
+    <button id="resetCamera">
+      ⟲ Góc nhìn
+    </button>
+
+    <button id="soundButton">
+      🔇 Âm thanh
+    </button>
+
+  </div>
+</header>
+
+<!-- BẢNG THÔNG TIN -->
+<section class="info-panel glass" id="infoPanel">
+
+  <button class="close-info" id="closeInfo">
+    ×
+  </button>
+
+  <small id="infoTag">
+    GIAI ĐOẠN 1/8
+  </small>
+
+  <h2 id="infoTitle">
+    Năng lượng Mặt Trời
+  </h2>
+
+  <p id="infoText"></p>
+
+</section>
+
+<!-- ĐIỀU KHIỂN -->
+<aside class="controls glass">
+
+  <h3>⚙ TRUNG TÂM ĐIỀU KHIỂN</h3>
+
+  <div class="auto-box">
+
+    <div class="auto-head">
+
+      <strong>
+        🔄 TỰ ĐỘNG TOÀN BỘ<br>
+        VÒNG TUẦN HOÀN
+      </strong>
+
+      <button id="autoButton" aria-pressed="false">
+        ○ TẮT
+      </button>
+
+    </div>
+
+    <div
+      class="progress-track"
+      id="progressTrack"
+      role="progressbar"
+      aria-label="Tiến trình mô phỏng"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+    >
+      <div
+        class="progress-fill"
+        id="progressFill">
+      </div>
+    </div>
+
+    <div class="progress-text" id="progressText">
+      Chưa bắt đầu · 0%
+    </div>
+  </div>
+
+  <!-- TỐC ĐỘ -->
+  <div class="control">
+
+    <label>
+      Tốc độ mô phỏng
+      <output id="speedValue">1.0×</output>
+    </label>
+
+    <input
+      id="speed"
+      type="range"
+      min=".2"
+      max="3"
+      step=".1"
+      value="1"
+    >
+  </div>
+
+  <!-- MƯA -->
+  <div class="control">
+
+    <label>
+      Cường độ mưa
+      <output id="rainValue">75%</output>
+    </label>
+
+    <input
+      id="rainLevel"
+      type="range"
+      min="0"
+      max="100"
+      value="75"
+    >
+  </div>
+
+  <!-- MÂY -->
+  <div class="control">
+
+    <label>
+      Mật độ mây
+      <output id="cloudValue">85%</output>
+    </label>
+
+    <input
+      id="cloudLevel"
+      type="range"
+      min="20"
+      max="100"
+      value="85"
+    >
+  </div>
+
+  <!-- SÁNG / TỐI -->
+  <div class="time-box">
+
+    <div class="control">
+
+      <label>
+        🌞 Thời gian trong ngày
+        <output id="timeValue">09:00</output>
+      </label>
+
+      <input
+        id="timeSlider"
+        type="range"
+        min="0"
+        max="24"
+        step=".25"
+        value="9"
+      >
+
+    </div>
+
+    <div class="time-presets">
+
+      <button data-time="6.5">
+        🌅 Sáng
+      </button>
+
+      <button data-time="12">
+        ☀ Trưa
+      </button>
+
+      <button data-time="17.5">
+        🌇 Chiều
+      </button>
+
+      <button data-time="21">
+        🌙 Đêm
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- BẬT / TẮT -->
+  <div class="toggle-grid">
+
+    <button id="autoDay">
+      ▶ Ngày/đêm
+    </button>
+
+    <button id="rotateButton">
+      ⟳ Tự xoay
+    </button>
+
+    <button id="labelsButton" class="active">
+      🏷 Nhãn
+    </button>
+
+    <button id="particlesButton" class="active">
+      ✧ Hạt nước
+    </button>
+
+  </div>
+
+</aside>
+
+<!-- HƯỚNG DẪN -->
+<div class="tip">
+  🖱 Kéo để xoay · Cuộn để phóng to ·
+  Bấm vào vật thể để xem kiến thức
+</div>
+
+<!-- THANH 8 GIAI ĐOẠN -->
+<div class="timeline glass">
+
+  <div class="stage-buttons">
+
+    <button class="active" data-stage="0">
+      ☀️ Mặt Trời
+    </button>
+
+    <button data-stage="1">
+      ♨️ Bốc hơi
+    </button>
+
+    <button data-stage="2">
+      🌲 Thoát hơi
+    </button>
+
+    <button data-stage="3">
+      ☁️ Ngưng tụ
+    </button>
+
+    <button data-stage="4">
+      🌧️ Mưa, tuyết
+    </button>
+
+    <button data-stage="5">
+      🏞️ Dòng chảy
+    </button>
+
+    <button data-stage="6">
+      💧 Thấm đất
+    </button>
+
+    <button data-stage="7">
+      🪨 Nước ngầm
+    </button>
+
+  </div>
+
+  <div class="navigation">
+
+    <button id="previous">
+      ← Trước
+    </button>
+
+    <button id="playButton" class="active">
+      ▶ Tự động
+    </button>
+
+    <button id="next">
+      Tiếp →
+    </button>
+
+  </div>
+
+</div>
+
+<div id="loading">
+  ĐANG KHỞI TẠO MÔ HÌNH TÍCH HỢP 3D...
+</div>
+
+<!-- THƯ VIỆN THREE.JS -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+
+import * as THREE from "three";
+
+import {
+  OrbitControls
+} from "three/addons/controls/OrbitControls.js";
+
+// ====================================
+// 1. TIỆN ÍCH
+// ====================================
+
+const $ = id => document.getElementById(id);
+
+function random(min,max) {
+  return min + Math.random()*(max-min);
+}
+
+const state = {
+  stage: 0,
+  speed: 1,
+  rain: .75,
+  cloud: .85,
+  time: 9,
+
+  auto: false,
+  autoDay: false,
+  rotation: false,
+  labels: true,
+  particles: true,
+  sound: false
+};
+
+const STAGE_DURATION = 7;
+
+let stageElapsed = 0;
+let simulationTime = 0;
+
+// ====================================
+// 2. NỘI DUNG 8 GIAI ĐOẠN
+// ====================================
+
+const lessons = [
+
+  {
+    title: "Năng lượng Mặt Trời",
+    text:
+      "Năng lượng Mặt Trời làm ấm đại dương, " +
+      "sông, hồ và đất. Đây là nguồn năng lượng " +
+      "quan trọng thúc đẩy bốc hơi trong " +
+      "vòng tuần hoàn nước."
+  },
+
+  {
+    title: "Quá trình bốc hơi",
+    text:
+      "Nước ở thể lỏng chuyển thành hơi nước " +
+      "và hòa vào khí quyển. Những hạt sáng " +
+      "trong mô hình chỉ có tác dụng minh họa " +
+      "vì hơi nước ở thể khí không nhìn thấy " +
+      "trực tiếp bằng mắt thường."
+  },
+
+  {
+    title: "Thực vật thoát hơi nước",
+    text:
+      "Rễ cây hấp thụ nước từ đất. " +
+      "Nước được vận chuyển đến các bộ phận " +
+      "của cây, một phần thoát ra khí quyển " +
+      "chủ yếu thông qua lá."
+  },
+
+  {
+    title: "Ngưng tụ và hình thành mây",
+    text:
+      "Không khí ẩm có thể đi lên do đối lưu " +
+      "hoặc gặp địa hình núi. " +
+      "Khi lạnh đi đến điều kiện thích hợp, " +
+      "hơi nước ngưng tụ thành các giọt nhỏ. " +
+      "Ở vùng đủ lạnh, tinh thể băng " +
+      "cũng có thể hình thành."
+  },
+
+  {
+    title: "Mưa và tuyết rơi",
+    text:
+      "Các giọt nước và tinh thể băng trong " +
+      "mây phát triển đủ lớn rồi rơi xuống " +
+      "do trọng lực. Dạng giáng thủy " +
+      "phụ thuộc vào điều kiện nhiệt độ " +
+      "trong mây và trên đường rơi."
+  },
+
+  {
+    title: "Dòng chảy mặt",
+    text:
+      "Một phần nước mưa hoặc tuyết tan " +
+      "chảy trên bề mặt, tập trung vào " +
+      "suối, hồ, sông và có thể trở lại biển. " +
+      "Trọng lực góp phần làm nước " +
+      "di chuyển từ cao xuống thấp."
+  },
+
+  {
+    title: "Nước thấm xuống đất",
+    text:
+      "Một phần nước mưa thấm qua " +
+      "các lỗ rỗng của đất và đá. " +
+      "Nước có thể được giữ lại trong đất, " +
+      "được cây hấp thụ hoặc thấm sâu hơn."
+  },
+
+  {
+    title: "Nước dưới đất trở về sông biển",
+    text:
+      "Nước dưới đất có thể di chuyển " +
+      "qua lỗ rỗng và khe nứt trong đất đá, " +
+      "bổ sung cho sông, hồ, suối hoặc " +
+      "trở về đại dương. " +
+      "Vòng tuần hoàn của nước không có " +
+      "điểm bắt đầu hay kết thúc cố định."
+  }
+
+];
+
+// ====================================
+// 3. KHỞI TẠO THREE.JS
+// ====================================
+
+const scene = new THREE.Scene();
+
+scene.background = new THREE.Color(
+  0x8cddfa
+);
+
+scene.fog = new THREE.Fog(
+  0xb9e8ff,
+  65,
+  155
+);
+
+const camera = new THREE.PerspectiveCamera(
+  47,
+  innerWidth/innerHeight,
+  .1,
+  230
+);
+
+camera.position.set(36,27,39);
+
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  powerPreference: "high-performance"
+});
+
+renderer.setSize(innerWidth,innerHeight);
+
+renderer.setPixelRatio(
+  Math.min(devicePixelRatio,2)
+);
+
+renderer.shadowMap.enabled = true;
+
+renderer.shadowMap.type =
+  THREE.PCFSoftShadowMap;
+
+renderer.outputColorSpace =
+  THREE.SRGBColorSpace;
+
+renderer.toneMapping =
+  THREE.ACESFilmicToneMapping;
+
+renderer.toneMappingExposure = 1.24;
+
+$("scene3d").appendChild(renderer.domElement);
+
+// ====================================
+// 4. CAMERA
+// ====================================
+
+const controls = new OrbitControls(
+  camera,
+  renderer.domElement
+);
+
+controls.target.set(0,5,0);
+
+controls.enableDamping = true;
+controls.dampingFactor = .075;
+
+controls.minDistance = 12;
+controls.maxDistance = 90;
+
+controls.maxPolarAngle = Math.PI*.49;
+
+controls.autoRotateSpeed = .55;
+
+controls.update();
+
+// ====================================
+// 5. ÁNH SÁNG
+// ====================================
+
+const ambient = new THREE.HemisphereLight(
+  0xeaffff,
+  0x4d6542,
+  2.35
+);
+
+scene.add(ambient);
+
+const sunlight = new THREE.DirectionalLight(
+  0xffe7b8,
+  3
+);
+
+sunlight.position.set(-24,33,13);
+
+sunlight.castShadow = true;
+
+sunlight.shadow.mapSize.set(
+  2048,2048
+);
+
+Object.assign(
+  sunlight.shadow.camera,
+  {
+    left: -50,
+    right: 50,
+    top: 50,
+    bottom: -50
+  }
+);
+
+scene.add(sunlight);
+
+// ====================================
+// 6. HÀM DỰNG VẬT THỂ
+// ====================================
+
+function material(color,roughness=1) {
+
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness
+  });
+
+}
+
+function createMesh(
+  geometry,
+  mat,
+  parent=scene
+) {
+
+  const object = new THREE.Mesh(
+    geometry,
+    mat
+  );
+
+  object.castShadow = true;
+  object.receiveShadow = true;
+
+  parent.add(object);
+
+  return object;
+}
+
+const selectable = [];
+
+function createGroup(title,description) {
+
+  const group = new THREE.Group();
+
+  group.userData = {
+    title,
+    description
+  };
+
+  selectable.push(group);
+
+  scene.add(group);
+
+  return group;
+}
+
+// ====================================
+// 7. ĐỊA HÌNH NỀN
+// ====================================
+
+// Khối đất lớn
+
+const earth = createMesh(
+  new THREE.BoxGeometry(52,4,36),
+  material(0x966543)
+);
+
+earth.position.y = -1.85;
+
+// Tầng đất
+
+const soil = createMesh(
+  new THREE.BoxGeometry(52,.55,36),
+  material(0x77543d)
+);
+
+soil.position.y = -3.55;
+
+// Lớp cỏ
+
+const grass = createMesh(
+  new THREE.BoxGeometry(52,.27,36),
+  material(0x61bb45)
+);
+
+grass.position.y = .12;
+
+// ====================================
+// 8. BIỂN, HỒ, SÔNG
+// ====================================
+
+const waterGroup = createGroup(
+  "Biển, hồ và dòng sông",
+  "Biển là nơi chứa phần lớn lượng nước " +
+  "trên Trái Đất. Nước trên biển, hồ " +
+  "và sông có thể bốc hơi, cung cấp " +
+  "hơi ẩm cho khí quyển."
+);
+
+const waterMaterial =
+  new THREE.MeshPhysicalMaterial({
+    color: 0x04bce9,
+    roughness: .19,
+    metalness: .06,
+    clearcoat: 1,
+    transparent: true,
+    opacity: .94
+  });
+
+function createWater(geometry,x,y,z) {
+
+  const object = createMesh(
+    geometry,
+    waterMaterial,
+    waterGroup
+  );
+
+  object.rotation.x = -Math.PI/2;
+
+  object.position.set(x,y,z);
+
+  object.castShadow = false;
+
+  return object;
+}
+
+// Biển
+
+const ocean = createWater(
+  new THREE.PlaneGeometry(52,10),
+  0,.34,13
+);
+
+// Hồ nước
+
+const lake = createWater(
+  new THREE.CircleGeometry(5.3,64),
+  -16,.35,2
+);
+
+// Sông uốn khúc
+
+const riverShape = new THREE.Shape();
+
+riverShape.moveTo(4,-16);
+
+riverShape.bezierCurveTo(
+  2,-11,
+  6,-6,
+  7,-2
+);
+
+riverShape.bezierCurveTo(
+  5,2,
+  10,6,
+  14,8
+);
+
+riverShape.lineTo(18,10);
+riverShape.lineTo(21,9);
+
+riverShape.bezierCurveTo(
+  13,3,
+  13,-1,
+  10,-5
+);
+
+riverShape.bezierCurveTo(
+  9,-10,
+  10,-13,
+  12,-16
+);
+
+riverShape.closePath();
+
+const river = createWater(
+  new THREE.ShapeGeometry(riverShape),
+  0,.355,0
+);
+
+// ====================================
+// 9. DÃY NÚI 3D
+// ====================================
+
+const mountains = createGroup(
+  "Dãy núi và mưa địa hình",
+  "Khi không khí ẩm gặp sườn núi, " +
+  "nó có thể bị nâng lên, giãn nở " +
+  "và lạnh dần. Điều này thuận lợi " +
+  "cho sự ngưng tụ và mưa địa hình. " +
+  "Băng và tuyết cũng là nơi " +
+  "dự trữ nước trong tự nhiên."
+);
+
+function createMountain(
+  x,z,height,radius,seed
+) {
+
+  const geometry = new THREE.ConeGeometry(
+    radius,
+    height,
+    13,
+    8
+  );
+
+  const positions =
+    geometry.attributes.position;
+
+  for(let i=0;i<positions.count;i++) {
+
+    const y = positions.getY(i);
+
+    if(Math.abs(y)<height*.49) {
+
+      positions.setX(
+        i,
+        positions.getX(i)*
+        (1+.08*Math.sin(i*2.3+seed))
+      );
+
+      positions.setZ(
+        i,
+        positions.getZ(i)*
+        (1+.07*Math.cos(i*2.7+seed))
+      );
+
+    }
+  }
+
+  geometry.computeVertexNormals();
+
+  const rock = createMesh(
+    geometry,
+    material(
+      seed%2
+        ? 0x7b8c81
+        : 0x8b9995
+    ),
+    mountains
+  );
+
+  rock.position.set(
+    x,
+    height/2+.38,
+    z
+  );
+
+  // Đỉnh tuyết
+
+  const snowcap = createMesh(
+    new THREE.ConeGeometry(
+      radius*.27,
+      height*.21,
+      13
+    ),
+    material(0xecfbff),
+    mountains
+  );
+
+  snowcap.position.set(
+    x,
+    height*.90+.38,
+    z
+  );
+}
+
+createMountain(-15,-12,11,7,1);
+createMountain(-6,-12,17,9,2);
+createMountain(5,-13,19,9,3);
+createMountain(17,-12,12,7,4);
+
+// ====================================
+// 10. RỪNG CÂY
+// ====================================
+
+const forest = createGroup(
+  "Rừng cây và thoát hơi nước",
+  "Cây hấp thụ nước qua rễ, " +
+  "sau đó thoát hơi nước chủ yếu qua lá. " +
+  "Rừng còn góp phần bảo vệ đất, " +
+  "hạn chế xói mòn và ảnh hưởng " +
+  "đến dòng chảy, sự thấm nước."
+);
+
+const trunkMaterial = material(0x865738);
+
+const leafMaterials = [
+  material(0x148f49),
+  material(0x36ac55),
+  material(0x60d368)
+];
+
+function createTree(x,z,scale=1) {
+
+  const tree = new THREE.Group();
+
+  tree.position.set(x,.4,z);
+  tree.scale.setScalar(scale);
+
+  forest.add(tree);
+
+  const trunk = createMesh(
+    new THREE.CylinderGeometry(
+      .12,.18,1.7,7
+    ),
+    trunkMaterial,
+    tree
+  );
+
+  trunk.position.y = .83;
+
+  for(let i=0;i<3;i++) {
+
+    const leaves = createMesh(
+      new THREE.ConeGeometry(
+        1.25-i*.12,
+        2.3,
+        9
+      ),
+      leafMaterials[i],
+      tree
+    );
+
+    leaves.position.y =
+      1.6+i*.7;
+
+  }
+}
+
+// Phân bố cây
+
+for(let i=0;i<105;i++) {
+
+  const x = -23+(i*7.39)%46;
+  const z = -14+(i*5.21)%29;
+
+  if(z>7) continue;
+
+  if(
+    x<-11 &&
+    z>-5 &&
+    z<7
+  ) continue;
+
+  if(
+    x>0 &&
+    x<21 &&
+    z>-15 &&
+    z<10
+  ) continue;
+
+  createTree(
+    x,z,
+    .33+(i%7)*.105
+  );
+}
+
+// ====================================
+// 11. NHÀ Ở
+// ====================================
+
+const houses = createGroup(
+  "Khu dân cư",
+  "Nguồn nước được sử dụng cho sinh hoạt " +
+  "và sản xuất. Sau mưa, nước có thể " +
+  "chảy tràn trên bề mặt. " +
+  "Các khu vực nhiều bê tông thường " +
+  "có khả năng thấm nước thấp hơn."
+);
+
+const houseWindows = [];
+
+function createHouse(x,z,scale=1) {
+
+  const house = new THREE.Group();
+
+  house.position.set(x,.42,z);
+  house.scale.setScalar(scale);
+
+  houses.add(house);
+
+  const wall = createMesh(
+    new THREE.BoxGeometry(2.6,2,2.1),
+    material(0xf4d4a0),
+    house
+  );
+
+  wall.position.y = 1;
+
+  const roof = createMesh(
+    new THREE.ConeGeometry(2.05,1.45,4),
+    material(0xb95935),
+    house
+  );
+
+  roof.rotation.y = Math.PI/4;
+  roof.position.y = 2.73;
+
+  const door = createMesh(
+    new THREE.BoxGeometry(.6,1.2,.08),
+    material(0x7f5038),
+    house
+  );
+
+  door.position.set(0,.6,1.1);
+
+  for(const side of [-.83,.83]) {
+
+    const windowMesh = createMesh(
+      new THREE.BoxGeometry(.48,.58,.09),
+      new THREE.MeshBasicMaterial({
+        color: 0x91dff6
+      }),
+      house
+    );
+
+    windowMesh.position.set(
+      side,1.25,1.11
+    );
+
+    houseWindows.push(windowMesh);
+  }
+}
+
+createHouse(-4,5,1.2);
+createHouse(2,7,.85);
+createHouse(19,3,.9);
+
+// ====================================
+// 12. MẶT TRỜI, MẶT TRĂNG
+// ====================================
+
+const sunGroup = createGroup(
+  "Mặt Trời",
+  "Năng lượng Mặt Trời thúc đẩy " +
+  "quá trình bốc hơi nước " +
+  "trong tự nhiên."
+);
+
+const sun = createMesh(
+  new THREE.SphereGeometry(2.7,28,20),
+  new THREE.MeshBasicMaterial({
+    color: 0xffda50
+  }),
+  sunGroup
+);
+
+sun.castShadow = false;
+
+const halo = createMesh(
+  new THREE.SphereGeometry(3.5,24,16),
+  new THREE.MeshBasicMaterial({
+    color: 0xffb533,
+    transparent: true,
+    opacity: .14,
+    depthWrite: false
+  }),
+  sunGroup
+);
+
+halo.castShadow = false;
+
+// Mặt Trăng
+
+const moon = createMesh(
+  new THREE.SphereGeometry(1.8,28,20),
+  new THREE.MeshBasicMaterial({
+    color: 0xe2edff
+  })
+);
+
+moon.castShadow = false;
+
+// ====================================
+// 13. BẦU TRỜI SAO
+// ====================================
+
+const starPositions = [];
+
+for(let i=0;i<290;i++) {
+
+  const phi = random(.15,1.25);
+  const theta = random(0,Math.PI*2);
+
+  const radius = 115;
+
+  starPositions.push(
+    Math.sin(phi)*Math.cos(theta)*radius,
+    Math.cos(phi)*radius,
+    Math.sin(phi)*Math.sin(theta)*radius
+  );
+
+}
+
+const starsGeometry =
+  new THREE.BufferGeometry();
+
+starsGeometry.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(
+    starPositions,3
+  )
+);
+
+const stars = new THREE.Points(
+  starsGeometry,
+  new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: .7,
+    sizeAttenuation: true
+  })
+);
+
+scene.add(stars);
+
+// ====================================
+// 14. MÂY 3D
+// ====================================
+
+const cloudGroup = createGroup(
+  "Đám mây",
+  "Mây gồm những giọt nước rất nhỏ " +
+  "hoặc tinh thể băng. " +
+  "Không phải tất cả các đám mây " +
+  "đều tạo ra mưa đến mặt đất."
+);
+
+const cloudMaterial =
+  new THREE.MeshStandardMaterial({
+    color: 0xf8fdff,
+    transparent: true,
+    opacity: .85,
+    roughness: 1,
+    depthWrite: false
+  });
+
+const clouds = [];
+
+function createCloud(x,y,z,scale,seed) {
+
+  const group = new THREE.Group();
+
+  group.position.set(x,y,z);
+
+  group.scale.setScalar(scale);
+
+  cloudGroup.add(group);
+
+  for(let i=0;i<23;i++) {
+
+    const puff = createMesh(
+      new THREE.SphereGeometry(
+        .9+(i%6)*.13,
+        13,
+        10
+      ),
+      cloudMaterial,
+      group
+    );
+
+    puff.position.set(
+      (i%6-2.5)*.88,
+      Math.sin(i*1.8)*.33,
+      Math.floor(i/6)*.65-1
+    );
+
+    puff.castShadow = false;
+  }
+
+  clouds.push({
+    group,x,y,seed
+  });
+}
+
+createCloud(-13,17,-9,1.3,1);
+createCloud(-3,23,-8,1.8,2);
+createCloud(11,21,-8,1.65,3);
+createCloud(15,18,2,1.25,4);
+
+// ====================================
+// 15. HỆ HẠT NƯỚC
+// ====================================
+
+function createParticles(count,color,size) {
+
+  const positions = new Float32Array(
+    count*3
+  );
+
+  const speeds = new Float32Array(
+    count
+  );
+
+  const geometry = new THREE.BufferGeometry();
+
+  geometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+      positions,3
+    )
+  );
+
+  const points = new THREE.Points(
+    geometry,
+    new THREE.PointsMaterial({
+      color,
+      size,
+      transparent: true,
+      opacity: .88,
+      depthWrite: false
+    })
+  );
+
+  scene.add(points);
+
+  return {
+    count,
+    positions,
+    speeds,
+    geometry,
+    points
+  };
+}
+
+const vapor = createParticles(
+  880,0xd5faff,.18
+);
+
+const plantVapor = createParticles(
+  390,0xb2ffdc,.18
+);
+
+const rain = createParticles(
+  2500,0x67d8ff,.19
+);
+
+const snow = createParticles(
+  470,0xffffff,.25
+);
+
+const infiltration = createParticles(
+  560,0x37e8ff,.2
+);
+
+// ====================================
+// 16. KHỞI TẠO HẠT BỐC HƠI
+// ====================================
+
+function resetVapor(i,surface=false) {
+
+  const k = i*3;
+
+  const source = i%3;
+
+  vapor.positions[k] =
+    source===0
+      ? random(-21,-12)
+      : source===1
+        ? random(5,19)
+        : random(-10,7);
+
+  vapor.positions[k+1] =
+    surface
+      ? .47
+      : random(.5,17);
+
+  vapor.positions[k+2] =
+    source===0
+      ? random(-1,6)
+      : source===1
+        ? random(10,16)
+        : random(8,15);
+
+  vapor.speeds[i] =
+    random(.75,1.75);
+}
+
+// ====================================
+// 17. HẠT THOÁT HƠI TỪ CÂY
+// ====================================
+
+function resetPlantVapor(i,surface=false) {
+
+  const k = i*3;
+
+  plantVapor.positions[k] =
+    random(-8,3);
+
+  plantVapor.positions[k+1] =
+    surface
+      ? random(2,4)
+      : random(2,16);
+
+  plantVapor.positions[k+2] =
+    random(-6,5);
+
+  plantVapor.speeds[i] =
+    random(.5,1.4);
+}
+
+// ====================================
+// 18. HẠT MƯA
+// ====================================
+
+function resetRain(i,top=false) {
+
+  const k = i*3;
+
+  rain.positions[k] =
+    random(-15,19);
+
+  rain.positions[k+1] =
+    top
+      ? random(19,23)
+      : random(2,23);
+
+  rain.positions[k+2] =
+    random(-13,5);
+
+  rain.speeds[i] =
+    random(6,11);
+}
+
+// ====================================
+// 19. HẠT TUYẾT
+// ====================================
+
+function resetSnow(i,top=false) {
+
+  const k = i*3;
+
+  snow.positions[k] =
+    random(-8,11);
+
+  snow.positions[k+1] =
+    top
+      ? random(20,24)
+      : random(10,24);
+
+  snow.positions[k+2] =
+    random(-15,-7);
+
+  snow.speeds[i] =
+    random(.5,1.45);
+}
+
+// ====================================
+// 20. HẠT NƯỚC THẤM
+// ====================================
+
+function resetInfiltration(i,surface=false) {
+
+  const k = i*3;
+
+  infiltration.positions[k] =
+    random(1,21);
+
+  infiltration.positions[k+1] =
+    surface
+      ? .2
+      : random(-3.25,.2);
+
+  infiltration.positions[k+2] =
+    random(-1,8);
+
+  infiltration.speeds[i] =
+    random(.25,.8);
+}
+
+// Tạo các hạt ban đầu
+
+for(let i=0;i<vapor.count;i++) {
+  resetVapor(i);
+}
+
+for(let i=0;i<plantVapor.count;i++) {
+  resetPlantVapor(i);
+}
+
+for(let i=0;i<rain.count;i++) {
+  resetRain(i);
+}
+
+for(let i=0;i<snow.count;i++) {
+  resetSnow(i);
+}
+
+for(let i=0;i<infiltration.count;i++) {
+  resetInfiltration(i);
+}
+
+// ====================================
+// 21. DÒNG CHẢY MẶT VÀ NƯỚC NGẦM
+// ====================================
+
+function createFlowPath(points,color) {
+
+  const curve = new THREE.CatmullRomCurve3(
+    points.map(
+      p => new THREE.Vector3(...p)
+    )
+  );
+
+  const path = createMesh(
+    new THREE.TubeGeometry(
+      curve,
+      120,
+      .17,
+      8,
+      false
+    ),
+    new THREE.MeshStandardMaterial({
+      color,
+      emissive: color,
+      emissiveIntensity: .35,
+      transparent: true,
+      opacity: .9
+    })
+  );
+
+  path.castShadow = false;
+
+  const drop = createMesh(
+    new THREE.SphereGeometry(.5,12,10),
+    new THREE.MeshBasicMaterial({
+      color
+    })
+  );
+
+  return {
+    curve,
+    path,
+    drop
+  };
+}
+
+// Dòng chảy từ núi xuống biển
+
+const runoff = createFlowPath(
+  [
+    [5,11,-11],
+    [10,7,-7],
+    [10,2,-2],
+    [13,.7,6],
+    [18,.6,12]
+  ],
+  0x2af1ff
+);
+
+// Dòng nước dưới đất
+
+const groundwater = createFlowPath(
+  [
+    [17,-1,2],
+    [11,-1.7,5],
+    [4,-2.3,7],
+    [-6,-2.2,10],
+    [-14,-1.4,12]
+  ],
+  0x67eaff
+);
+
+// ====================================
+// 22. NHÃN 3D
+// ====================================
+
+const labelGroup = new THREE.Group();
+
+scene.add(labelGroup);
+
+function createLabel(text,x,y,z) {
+
+  const canvas = document.createElement(
+    "canvas"
+  );
+
+  canvas.width = 700;
+  canvas.height = 110;
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "rgba(5,27,50,.93)";
+
+  ctx.beginPath();
+  ctx.roundRect(5,5,690,100,22);
+  ctx.fill();
+
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = "#77ecff";
+  ctx.stroke();
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "white";
+  ctx.font = "bold 34px Arial";
+
+  ctx.fillText(text,350,57);
+
+  const texture = new THREE.CanvasTexture(
+    canvas
+  );
+
+  texture.colorSpace =
+    THREE.SRGBColorSpace;
+
+  const sprite = new THREE.Sprite(
+    new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      depthTest: false
+    })
+  );
+
+  sprite.position.set(x,y,z);
+
+  sprite.scale.set(7.5,1.18,1);
+
+  labelGroup.add(sprite);
+}
+
+createLabel("Bốc hơi",-17,12,2);
+createLabel("Thoát hơi nước",-4,12,0);
+createLabel("Ngưng tụ",4,27,-9);
+createLabel("Mưa / tuyết",14,15,-5);
+createLabel("Dòng chảy mặt",17,8,3);
+createLabel("Thấm vào đất",17,3,7);
+createLabel("Nước dưới đất",1,-2,11);
+
+// ====================================
+// 23. ÁNH SÁNG SÁNG - TRƯA - TỐI
+// ====================================
+
+function updateDaylight() {
+
+  const hour = state.time%24;
+
+  const angle =
+    (hour-6)/12*Math.PI;
+
+  const altitude =
+    Math.sin(angle);
+
+  const brightness =
+    THREE.MathUtils.smoothstep(
+      altitude,
+      -.2,
+      .4
+    );
+
+  const twilight =
+    (hour>=16 && hour<20) ||
+    (hour>=4 && hour<8);
+
+  // Bầu trời
+
+  const skyNight = new THREE.Color(
+    "#08152f"
+  );
+
+  const skyDay = new THREE.Color(
+    twilight
+      ? "#ea9b76"
+      : "#8cddfa"
+  );
+
+  scene.background.copy(
+    skyNight.lerp(
+      skyDay,
+      brightness
+    )
+  );
+
+  scene.fog.color.copy(
+    new THREE.Color("#142a47").lerp(
+      new THREE.Color("#b9e8ff"),
+      brightness
+    )
+  );
+
+  // Độ sáng
+
+  ambient.intensity =
+    .38+brightness*1.97;
+
+  sunlight.intensity =
+    .07+brightness*3;
+
+  sunlight.color.set(
+    twilight
+      ? 0xffbc8a
+      : 0xffedc3
+  );
+
+  renderer.toneMappingExposure =
+    .83+brightness*.42;
+
+  // Mặt Trời di chuyển
+
+  sunGroup.position.set(
+    -Math.cos(angle)*30,
+    3+Math.max(altitude,0)*38,
+    -24
+  );
+
+  // Mặt Trăng
+
+  moon.position.set(
+    -sunGroup.position.x,
+    25,
+    -28
+  );
+
+  sunGroup.visible =
+    altitude>-.12;
+
+  moon.visible =
+    altitude<.12;
+
+  stars.visible =
+    brightness<.37;
+
+  // Đèn nhà bật khi tối
+
+  houseWindows.forEach(windowMesh => {
+
+    windowMesh.material.color.set(
+      brightness<.4
+        ? 0xffce76
+        : 0x91dff6
+    );
+
+  });
+
+  // Đồng hồ
+
+  const hh = Math.floor(hour);
+
+  const mm =
+    Math.round(
+      (hour-hh)*60
+    )%60;
+
+  $("timeValue").textContent =
+    String(hh).padStart(2,"0")+
+    ":"+
+    String(mm).padStart(2,"0");
+}
+
+// ====================================
+// 24. HIỂN THỊ KIẾN THỨC
+// ====================================
+
+function showInformation(
+  tag,
+  title,
+  text
+) {
+
+  $("infoPanel").classList.remove(
+    "hidden"
+  );
+
+  $("infoTag").textContent = tag;
+  $("infoTitle").textContent = title;
+  $("infoText").textContent = text;
+}
+
+function setStage(index) {
+
+  state.stage =
+    (index+lessons.length)%lessons.length;
+
+  const lesson = lessons[state.stage];
+
+  showInformation(
+    "GIAI ĐOẠN "+
+    (state.stage+1)+
+    "/8",
+    lesson.title,
+    lesson.text
+  );
+
+  document.querySelectorAll(
+    "[data-stage]"
+  ).forEach(button => {
+
+    const active =
+      Number(button.dataset.stage)===
+      state.stage;
+
+    button.classList.toggle(
+      "active",
+      active
+    );
+
+    button.setAttribute(
+      "aria-pressed",
+      String(active)
+    );
+
+  });
+
+  updateAudio();
+  updateProgress();
+}
+
+// ====================================
+// 25. BẤM VÀO VẬT THỂ
+// ====================================
+
+const raycaster =
+  new THREE.Raycaster();
+
+const pointer =
+  new THREE.Vector2();
+
+let pointerDown = null;
+
+renderer.domElement.addEventListener(
+  "pointerdown",
+  event => {
+
+    pointerDown = [
+      event.clientX,
+      event.clientY
+    ];
+
+  }
+);
+
+renderer.domElement.addEventListener(
+  "pointerup",
+  event => {
+
+    if(!pointerDown) return;
+
+    const moved = Math.hypot(
+      event.clientX-pointerDown[0],
+      event.clientY-pointerDown[1]
+    );
+
+    pointerDown = null;
+
+    if(moved>8) return;
+
+    const rect =
+      renderer.domElement.getBoundingClientRect();
+
+    pointer.set(
+      (
+        (event.clientX-rect.left)/
+        rect.width
+      )*2-1,
+
+      -(
+        (event.clientY-rect.top)/
+        rect.height*2-1
+      )
+    );
+
+    raycaster.setFromCamera(
+      pointer,
+      camera
+    );
+
+    const intersection =
+      raycaster.intersectObjects(
+        selectable,
+        true
+      )[0];
+
+    if(!intersection) return;
+
+    let object = intersection.object;
+
+    while(
+      object &&
+      !object.userData.title
+    ) {
+      object = object.parent;
+    }
+
+    if(object) {
+
+      showInformation(
+        "KHÁM PHÁ THÀNH PHẦN",
+        object.userData.title,
+        object.userData.description
+      );
+
+    }
+
+  }
+);
+
+// ====================================
+// 26. ÂM THANH MƯA - GIÓ - NƯỚC
+// ====================================
+
+let audioContext = null;
+
+let masterGain = null;
+let rainGain = null;
+let windGain = null;
+let waterGain = null;
+
+function setupAudio() {
+
+  const AudioClass =
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+  if(!AudioClass) return;
+
+  audioContext = new AudioClass();
+
+  masterGain =
+    audioContext.createGain();
+
+  masterGain.gain.value = 0;
+
+  masterGain.connect(
+    audioContext.destination
+  );
+
+  const noiseBuffer =
+    audioContext.createBuffer(
+      1,
+      audioContext.sampleRate*2,
+      audioContext.sampleRate
+    );
+
+  const samples =
+    noiseBuffer.getChannelData(0);
+
+  for(let i=0;i<samples.length;i++) {
+
+    samples[i] =
+      Math.random()*2-1;
+
+  }
+
+  function soundChannel(type,frequency) {
+
+    const source =
+      audioContext.createBufferSource();
+
+    source.buffer = noiseBuffer;
+    source.loop = true;
+
+    const filter =
+      audioContext.createBiquadFilter();
+
+    filter.type = type;
+
+    filter.frequency.value =
+      frequency;
+
+    const gain =
+      audioContext.createGain();
+
+    gain.gain.value = 0;
+
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(masterGain);
+
+    source.start();
+
+    return gain;
+  }
+
+  rainGain = soundChannel(
+    "lowpass",
+    1650
+  );
+
+  windGain = soundChannel(
+    "bandpass",
+    340
+  );
+
+  waterGain = soundChannel(
+    "lowpass",
+    560
+  );
+}
+
+function updateAudio() {
+
+  if(!audioContext) return;
+
+  const now =
+    audioContext.currentTime;
+
+  masterGain.gain.setTargetAtTime(
+    state.sound ? .7 : 0,
+    now,
+    .15
+  );
+
+  rainGain.gain.setTargetAtTime(
+    state.stage===4
+      ? state.rain*.75
+      : .012,
+    now,
+    .2
+  );
+
+  windGain.gain.setTargetAtTime(
+    state.stage===3
+      ? .22
+      : .06,
+    now,
+    .2
+  );
+
+  waterGain.gain.setTargetAtTime(
+    [5,6,7].includes(state.stage)
+      ? .23
+      : .07,
+    now,
+    .2
+  );
+}
+
+$("soundButton").onclick = async () => {
+
+  try {
+
+    if(!audioContext) {
+      setupAudio();
+    }
+
+    if(!audioContext) return;
+
+    state.sound = !state.sound;
+
+    if(state.sound) {
+      await audioContext.resume();
+    }
+
+    $("soundButton").textContent =
+      state.sound
+        ? "🔊 Âm thanh"
+        : "🔇 Âm thanh";
+
+    updateAudio();
+
+  } catch(error) {
+
+    console.error(
+      "Lỗi phát âm thanh:",
+      error
+    );
+
+  }
+};
+
+// ====================================
+// 27. THANH TIẾN TRÌNH
+// ====================================
+
+function updateProgress() {
+
+  const percentage = Math.round(
+    (
+      state.stage+
+      Math.min(
+        stageElapsed/STAGE_DURATION,
+        1
+      )
+    )/8*100
+  );
+
+  $("progressFill").style.width =
+    percentage+"%";
+
+  $("progressTrack").setAttribute(
+    "aria-valuenow",
+    String(percentage)
+  );
+
+  $("progressText").textContent =
+    (
+      state.auto
+        ? "Đang chạy"
+        : "Tạm dừng"
+    )+
+    " · Giai đoạn "+
+    (state.stage+1)+
+    "/8 · "+
+    percentage+"%";
+}
+
+function updateAutoButton() {
+
+  $("autoButton").textContent =
+    state.auto
+      ? "● BẬT"
+      : "○ TẮT";
+
+  $("autoButton").setAttribute(
+    "aria-pressed",
+    String(state.auto)
+  );
+
+  $("playButton").textContent =
+    state.auto
+      ? "⏸ Tạm dừng"
+      : "▶ Tự động";
+
+  updateProgress();
+}
+
+// ====================================
+// 28. TỰ ĐỘNG TOÀN BỘ CHU TRÌNH
+// ====================================
+
+$("autoButton").onclick = () => {
+
+  if(!state.auto) {
+
+    stageElapsed = 0;
+
+    setStage(0);
+
+    state.auto = true;
+
+  } else {
+
+    state.auto = false;
+
+  }
+
+  updateAutoButton();
+};
+
+$("playButton").onclick = () => {
+
+  state.auto = !state.auto;
+
+  updateAutoButton();
+};
+
+// ====================================
+// 29. ĐIỀU KHIỂN TỪNG GIAI ĐOẠN
+// ====================================
+
+function manualStage(index) {
+
+  state.auto = false;
+
+  stageElapsed = 0;
+
+  setStage(index);
+
+  updateAutoButton();
+}
+
+$("previous").onclick = () => {
+
+  manualStage(
+    state.stage-1
+  );
+
+};
+
+$("next").onclick = () => {
+
+  manualStage(
+    state.stage+1
+  );
+
+};
+
+document.querySelectorAll(
+  "[data-stage]"
+).forEach(button => {
+
+  button.onclick = () => {
+
+    manualStage(
+      Number(
+        button.dataset.stage
+      )
+    );
+
+  };
+
+});
+
+// ====================================
+// 30. THANH TRƯỢT
+// ====================================
+
+$("speed").oninput = event => {
+
+  state.speed =
+    Number(event.target.value);
+
+  $("speedValue").textContent =
+    state.speed.toFixed(1)+"×";
+
+};
+
+$("rainLevel").oninput = event => {
+
+  state.rain =
+    Number(event.target.value)/100;
+
+  $("rainValue").textContent =
+    event.target.value+"%";
+
+  updateAudio();
+};
+
+$("cloudLevel").oninput = event => {
+
+  state.cloud =
+    Number(event.target.value)/100;
+
+  $("cloudValue").textContent =
+    event.target.value+"%";
+
+  cloudMaterial.opacity =
+    state.cloud;
+};
+
+// ====================================
+// 31. ĐIỀU KHIỂN NGÀY ĐÊM
+// ====================================
+
+$("timeSlider").oninput = event => {
+
+  state.time =
+    Number(event.target.value);
+
+  state.autoDay = false;
+
+  updateAutoDayButton();
+  updateDaylight();
+};
+
+document.querySelectorAll(
+  "[data-time]"
+).forEach(button => {
+
+  button.onclick = () => {
+
+    state.time =
+      Number(button.dataset.time);
+
+    $("timeSlider").value =
+      state.time;
+
+    state.autoDay = false;
+
+    updateAutoDayButton();
+    updateDaylight();
+
+  };
+
+});
+
+function updateAutoDayButton() {
+
+  $("autoDay").textContent =
+    state.autoDay
+      ? "⏸ Ngày/đêm"
+      : "▶ Ngày/đêm";
+
+  $("autoDay").setAttribute(
+    "aria-pressed",
+    String(state.autoDay)
+  );
+
+}
+
+$("autoDay").onclick = () => {
+
+  state.autoDay =
+    !state.autoDay;
+
+  updateAutoDayButton();
+};
+
+// ====================================
+// 32. CÁC NÚT BẬT TẮT
+// ====================================
+
+function createToggle(
+  id,
+  property,
+  callback
+) {
+
+  $(id).onclick = () => {
+
+    state[property] =
+      !state[property];
+
+    $(id).classList.toggle(
+      "active",
+      state[property]
+    );
+
+    $(id).setAttribute(
+      "aria-pressed",
+      String(state[property])
+    );
+
+    if(callback) callback();
+
+  };
+}
+
+// Tự xoay
+
+createToggle(
+  "rotateButton",
+  "rotation",
+  () => {
+
+    controls.autoRotate =
+      state.rotation;
+
+  }
+);
+
+// Hiện nhãn
+
+createToggle(
+  "labelsButton",
+  "labels",
+  () => {
+
+    labelGroup.visible =
+      state.labels;
+
+  }
+);
+
+// Hiện hạt nước
+
+createToggle(
+  "particlesButton",
+  "particles",
+  () => {}
+);
+
+// ====================================
+// 33. ĐÓNG BẢNG VÀ ĐẶT LẠI CAMERA
+// ====================================
+
+$("closeInfo").onclick = () => {
+
+  $("infoPanel").classList.add(
+    "hidden"
+  );
+
+};
+
+$("resetCamera").onclick = () => {
+
+  camera.position.set(
+    36,27,39
+  );
+
+  controls.target.set(
+    0,5,0
+  );
+
+  controls.update();
+};
+
+// ====================================
+// 34. CHUYỂN ĐỘNG HẠT
+// ====================================
+
+function moveParticles(
+  particleSet,
+  enabled,
+  delta,
+  type
+) {
+
+  particleSet.points.visible =
+    state.particles &&
+    enabled;
+
+  if(!particleSet.points.visible) {
+    return;
+  }
+
+  for(
+    let i=0;
+    i<particleSet.count;
+    i++
+  ) {
+
+    const k=i*3;
+
+    // BỐC HƠI
+
+    if(type==="vapor") {
+
+      particleSet.positions[k+1] +=
+        particleSet.speeds[i]*
+        delta*1.6;
+
+      if(
+        particleSet.positions[k+1]>21
+      ) {
+
+        resetVapor(i,true);
+
+      }
+
+    }
+
+    // THOÁT HƠI NƯỚC
+
+    if(type==="plant") {
+
+      particleSet.positions[k+1] +=
+        particleSet.speeds[i]*
+        delta*1.5;
+
+      if(
+        particleSet.positions[k+1]>21
+      ) {
+
+        resetPlantVapor(i,true);
+
+      }
+
+    }
+
+    // MƯA RƠI
+
+    if(type==="rain") {
+
+      particleSet.positions[k+1] -=
+        particleSet.speeds[i]*
+        delta*1.8;
+
+      particleSet.positions[k] +=
+        .17*delta;
+
+      if(
+        particleSet.positions[k+1]<.35
+      ) {
+
+        resetRain(i,true);
+
+      }
+
+    }
+
+    // TUYẾT RƠI
+
+    if(type==="snow") {
+
+      particleSet.positions[k+1] -=
+        particleSet.speeds[i]*
+        delta;
+
+      particleSet.positions[k] +=
+        .1*delta;
+
+      if(
+        particleSet.positions[k+1]<9
+      ) {
+
+        resetSnow(i,true);
+
+      }
+
+    }
+
+    // NƯỚC THẤM
+
+    if(type==="infiltration") {
+
+      particleSet.positions[k+1] -=
+        particleSet.speeds[i]*
+        delta*.8;
+
+      if(
+        particleSet.positions[k+1]<-3.2
+      ) {
+
+        resetInfiltration(i,true);
+
+      }
+
+    }
+
+  }
+
+  particleSet.geometry.attributes.position
+    .needsUpdate = true;
+
+}
+
+// ====================================
+// 35. VÒNG LẶP HOẠT ẢNH
+// ====================================
+
+let lastTime = performance.now();
+
+function animate(now) {
+
+  requestAnimationFrame(animate);
+
+  const delta = Math.min(
+    (now-lastTime)/1000,
+    .05
+  );
+
+  lastTime = now;
+
+  const step =
+    delta*state.speed;
+
+  simulationTime += step;
+
+  controls.update();
+
+  // Mây chuyển động
+
+  clouds.forEach(cloud => {
+
+    cloud.group.position.x =
+      cloud.x+
+      Math.sin(
+        simulationTime*.22+
+        cloud.seed
+      )*.9;
+
+    cloud.group.position.y =
+      cloud.y+
+      Math.sin(
+        simulationTime*.34+
+        cloud.seed
+      )*.2;
+
+  });
+
+  // Gợn mặt nước
+
+  ocean.position.y =
+    .34+
+    Math.sin(
+      simulationTime*1.7
+    )*.018;
+
+  lake.position.y =
+    .35+
+    Math.sin(
+      simulationTime*1.4
+    )*.012;
+
+  // Bốc hơi
+
+  moveParticles(
+    vapor,
+    state.stage===1,
+    step,
+    "vapor"
+  );
+
+  // Thoát hơi nước
+
+  moveParticles(
+    plantVapor,
+    state.stage===2,
+    step,
+    "plant"
+  );
+
+  // Mưa
+
+  moveParticles(
+    rain,
+    state.stage===4 &&
+    state.rain>0,
+    step,
+    "rain"
+  );
+
+  rain.geometry.setDrawRange(
+    0,
+    Math.floor(
+      rain.count*state.rain
+    )
+  );
+
+  // Tuyết
+
+  moveParticles(
+    snow,
+    state.stage===4 &&
+    state.rain>.15,
+    step,
+    "snow"
+  );
+
+  // Thấm
+
+  moveParticles(
+    infiltration,
+    state.stage===6,
+    step,
+    "infiltration"
+  );
+
+  // Dòng chảy
+
+  runoff.path.visible =
+    state.stage===5;
+
+  runoff.drop.visible =
+    state.stage===5;
+
+  // Nước ngầm
+
+  groundwater.path.visible =
+    state.stage===7;
+
+  groundwater.drop.visible =
+    state.stage===7;
+
+  // Chuyển động của hạt nước trên dòng chảy
+
+  if(runoff.drop.visible) {
+
+    const position =
+      runoff.curve.getPoint(
+        (
+          simulationTime*.14
+        )%1
+      );
+
+    runoff.drop.position.copy(
+      position
+    );
+  }
+
+  // Hạt nước ngầm
+
+  if(groundwater.drop.visible) {
+
+    const position =
+      groundwater.curve.getPoint(
+        (
+          simulationTime*.12
+        )%1
+      );
+
+    groundwater.drop.position.copy(
+      position
+    );
+  }
+
+  // TỰ ĐỘNG TOÀN BỘ 8 GIAI ĐOẠN
+
+  if(state.auto) {
+
+    stageElapsed += step;
+
+    while(
+      stageElapsed>=STAGE_DURATION
+    ) {
+
+      stageElapsed -= STAGE_DURATION;
+
+      setStage(
+        state.stage+1
+      );
+
+    }
+
+    updateProgress();
+
+  }
+
+  // TỰ ĐỘNG CHUYỂN NGÀY ĐÊM
+
+  if(state.autoDay) {
+
+    state.time =
+      (
+        state.time+
+        step*.23
+      )%24;
+
+    $("timeSlider").value =
+      state.time;
+
+    updateDaylight();
+
+  }
+
+  renderer.render(
+    scene,
+    camera
+  );
+}
+
+// ====================================
+// 36. RESPONSIVE
+// ====================================
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    camera.aspect =
+      innerWidth/innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+      innerWidth,
+      innerHeight
+    );
+
+  }
+);
+
+// ====================================
+// 37. KHỞI ĐỘNG
+// ====================================
+
+setStage(0);
+
+updateAutoButton();
+
+updateDaylight();
+
+$("loading").classList.add(
+  "hidden"
+);
+
+requestAnimationFrame(animate);
+
+</script>
+
+</body>
+</html>

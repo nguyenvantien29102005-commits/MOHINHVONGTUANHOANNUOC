@@ -1,0 +1,1700 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07162d">
+<title>Lý thuyết | Vòng tuần hoàn của nước</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+  --bg:#07162d;
+  --panel:#112b49;
+  --panel2:#173756;
+  --cyan:#58e1f3;
+  --blue:#8eb9ff;
+  --purple:#b4a8ff;
+  --text:#f4faff;
+  --muted:#b8cbdc;
+  --border:rgba(152,215,255,.2);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  font-family:"Be Vietnam Pro",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at 10% 10%,#103d65,transparent 45%),
+    radial-gradient(ellipse at 90% 75%,#271d59,transparent 45%),
+    var(--bg);
+  line-height:1.85;
+}
+
+button,a{font:inherit}
+button{cursor:pointer}
+a{color:var(--cyan)}
+img{max-width:100%}
+
+button:focus-visible,a:focus-visible{
+  outline:3px solid var(--cyan);
+  outline-offset:3px;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#07162df2;
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav{
+  max-width:1280px;
+  margin:auto;
+  padding:13px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:14px;
+  font-weight:900;
+}
+
+.logo-icon{
+  width:43px;
+  height:43px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#3ddfec,#697afa);
+  display:grid;
+  place-items:center;
+  font-size:25px;
+}
+
+.btn{
+  display:inline-block;
+  text-decoration:none;
+  border:1px solid var(--border);
+  background:#ffffff12;
+  padding:11px 17px;
+  border-radius:12px;
+  color:white;
+  font-size:12px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.btn:hover{
+  border-color:var(--cyan);
+  color:var(--cyan);
+}
+
+main{
+  max-width:1280px;
+  margin:auto;
+  padding:32px 24px 85px;
+}
+
+section{margin:70px 0}
+
+.kicker{
+  color:var(--cyan);
+  letter-spacing:2.5px;
+  font-weight:900;
+  font-size:11px;
+  text-transform:uppercase;
+}
+
+.gradient{
+  background:linear-gradient(90deg,#53e8f6,#8dbaff,#bbaaff);
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:45px;
+  min-height:465px;
+  align-items:center;
+}
+
+h1{
+  font-size:clamp(34px,5vw,62px);
+  line-height:1.3;
+  margin:18px 0;
+  font-weight:900;
+}
+
+.hero p{
+  font-size:15px;
+  color:var(--muted);
+  line-height:2;
+  margin-bottom:30px;
+}
+
+.hero-image{
+  overflow:hidden;
+  border-radius:28px;
+  border:1px solid var(--border);
+  background:#143858;
+  box-shadow:0 25px 65px #0006;
+}
+
+.hero-image img{
+  display:block;
+  width:100%;
+  height:390px;
+  object-fit:contain;
+}
+
+.img-caption{
+  padding:13px;
+  background:#071a32;
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.section-title{
+  margin-bottom:25px;
+}
+
+.section-title h2{
+  font-size:clamp(24px,3vw,35px);
+  line-height:1.45;
+  margin:10px 0;
+}
+
+.section-title p{
+  color:var(--muted);
+  margin:0;
+  max-width:850px;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+
+.card{
+  background:linear-gradient(145deg,#153a5b,#0c203c);
+  border:1px solid var(--border);
+  padding:28px;
+  border-radius:23px;
+}
+
+.card h3{
+  font-size:18px;
+  margin:10px 0;
+  color:#eaf7ff;
+}
+
+.card p{
+  color:#c4d9e8;
+  font-size:14px;
+  margin-bottom:0;
+}
+
+.card-icon{
+  font-size:43px;
+  line-height:1.4;
+}
+
+.key{
+  color:var(--cyan);
+  font-weight:800;
+}
+
+.note{
+  background:#49d9ee11;
+  border-left:4px solid var(--cyan);
+  border-radius:0 12px 12px 0;
+  padding:17px 20px;
+  margin:24px 0;
+  color:#d6eaf7;
+}
+
+.note strong{color:var(--cyan)}
+
+/* SƠ ĐỒ TƯƠNG TÁC */
+
+.diagram-box{
+  background:linear-gradient(145deg,#0c2544,#112d4c);
+  border:1px solid var(--border);
+  border-radius:26px;
+  overflow:hidden;
+  padding:20px;
+}
+
+.diagram-svg{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:17px;
+  background:#163c6c;
+}
+
+.hotspots{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:11px;
+  margin:22px 0;
+}
+
+.hotspot{
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:#ffffff0a;
+  color:#dcefff;
+  padding:12px 8px;
+  font-size:11px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.hotspot:hover,.hotspot.active{
+  background:#175576;
+  color:white;
+  border-color:var(--cyan);
+}
+
+.info-panel{
+  padding:23px;
+  background:#102e4b;
+  border:1px solid #55def544;
+  border-radius:18px;
+  min-height:160px;
+}
+
+.info-panel h3{
+  color:var(--cyan);
+  margin:0 0 8px;
+}
+
+.info-panel p{
+  margin:0;
+  color:#d2e5f3;
+}
+
+.info-index{
+  color:var(--purple);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+/* HÌNH ẢNH */
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:22px;
+}
+
+.photo-card{
+  background:#102844;
+  border:1px solid var(--border);
+  border-radius:22px;
+  overflow:hidden;
+}
+
+.photo-card img{
+  display:block;
+  width:100%;
+  height:320px;
+  object-fit:contain;
+  background:#e4f4fd;
+}
+
+.photo-content{padding:22px}
+
+.photo-content h3{
+  margin:0 0 10px;
+  color:var(--cyan);
+}
+
+.photo-content p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* VÒNG TUẦN HOÀN NHỎ VÀ LỚN */
+
+.cycle-card{
+  background:linear-gradient(145deg,#143858,#0b1c3a);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:30px;
+}
+
+.cycle-card h3{
+  color:var(--cyan);
+  margin-top:0;
+}
+
+.cycle-chain{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:20px 0;
+  align-items:center;
+}
+
+.chain-item{
+  padding:10px 13px;
+  border-radius:12px;
+  background:#ffffff13;
+  border:1px solid var(--border);
+  font-weight:700;
+  font-size:12px;
+}
+
+.chain-arrow{
+  color:var(--cyan);
+  font-weight:900;
+}
+
+.cycle-card p{
+  color:#cbdcec;
+  font-size:14px;
+}
+
+/* KIẾN THỨC MỞ RỘNG */
+
+details{
+  background:#102a48;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:17px 20px;
+  margin-bottom:12px;
+}
+
+summary{
+  cursor:pointer;
+  font-weight:800;
+}
+
+details p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.summary-card{
+  border:1px solid #53dff655;
+  background:linear-gradient(120deg,#12436a,#182350);
+  border-radius:25px;
+  padding:35px;
+}
+
+.summary-card h3{
+  color:var(--cyan);
+}
+
+.summary-card p{
+  color:#d9e9f7;
+}
+
+.source{
+  color:var(--muted);
+  font-size:13px;
+}
+
+footer{
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:28px;
+  color:#9bb4cc;
+  font-size:11px;
+}
+
+@media(max-width:900px){
+  .hero,.grid2,.grid3,.photo-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero{gap:25px;min-height:auto}
+  .hotspots{grid-template-columns:repeat(2,1fr)}
+  .hero-image img{height:320px}
+}
+
+@media(max-width:500px){
+  main{padding:22px 14px 55px}
+  .nav{padding:12px}
+  .logo{font-size:11px}
+  .logo-icon{width:35px;height:35px}
+  .card,.cycle-card{padding:21px}
+  .diagram-box{padding:10px}
+  .hotspot{font-size:10px}
+  .photo-card img{height:245px}
+  h1{font-size:34px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">💧</div>
+      <span>HÀNH TRÌNH CỦA NƯỚC</span>
+    </div>
+
+    <a href="../index.html" class="btn">
+      ← TRANG CHỦ
+    </a>
+  </nav>
+</header>
+
+<main>
+
+<!-- TRANG GIỚI THIỆU -->
+
+<div class="hero">
+
+  <div>
+    <div class="kicker">
+      CHUYÊN MỤC 02 · KHÔNG GIAN LÝ THUYẾT
+    </div>
+
+    <h1>
+      VÒNG TUẦN HOÀN
+      <span class="gradient">CỦA NƯỚC</span>
+    </h1>
+
+    <p>
+      Nước trên Trái Đất luôn vận động:
+      từ đại dương lên khí quyển,
+      từ những đám mây trở về mặt đất,
+      thấm xuống lòng đất hoặc chảy ra sông, biển.
+      Hãy cùng khám phá hành trình tuần hoàn
+      của nước trong tự nhiên.
+    </p>
+
+    <a href="#khai-niem" class="btn">
+      BẮT ĐẦU KHÁM PHÁ ↓
+    </a>
+  </div>
+
+  <div class="hero-image">
+    <img
+      src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/water-cycle-natural.jpg"
+      alt="Sơ đồ vòng tuần hoàn tự nhiên của nước do USGS cung cấp"
+    >
+    <div class="img-caption">
+      Sơ đồ vòng tuần hoàn nước trong tự nhiên · USGS
+    </div>
+  </div>
+</div>
+
+
+<!-- PHẦN 1: KHÁI NIỆM -->
+
+<section id="khai-niem">
+
+  <div class="section-title">
+    <div class="kicker">PHẦN 01 · KHÁI NIỆM</div>
+    <h2>Vòng tuần hoàn của nước là gì?</h2>
+  </div>
+
+  <div class="card">
+
+    <div class="card-icon">🌍</div>
+
+    <h3>Khái niệm</h3>
+
+    <p>
+      <span class="key">Vòng tuần hoàn của nước</span>
+      là sự vận động liên tục của nước
+      trong tự nhiên, giữa khí quyển,
+      bề mặt lục địa, đại dương
+      và các tầng đất đá bên dưới mặt đất.
+    </p>
+
+    <p>
+      Trong quá trình đó, nước có thể tồn tại
+      và chuyển đổi giữa ba thể:
+      thể lỏng, thể rắn và thể khí.
+    </p>
+
+    <p>
+      Nước di chuyển thông qua những quá trình
+      như bốc hơi, thoát hơi nước của thực vật,
+      ngưng tụ, giáng thủy, dòng chảy,
+      thấm và sự vận động của nước dưới đất.
+    </p>
+
+    <div class="note">
+      <strong>Ghi nhớ:</strong>
+      Vòng tuần hoàn của nước diễn ra liên tục,
+      không có điểm bắt đầu hoặc kết thúc
+      cố định.
+    </div>
+
+  </div>
+
+  <div class="grid3">
+
+    <article class="card">
+      <div class="card-icon">💧</div>
+      <h3>Thể lỏng</h3>
+      <p>
+        Nước trong đại dương, sông, hồ,
+        nước mưa và nước dưới đất.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">❄️</div>
+      <h3>Thể rắn</h3>
+      <p>
+        Nước tồn tại ở dạng băng,
+        tuyết và các sông băng.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">♨️</div>
+      <h3>Thể khí</h3>
+      <p>
+        Hơi nước có trong khí quyển,
+        mắt thường không nhìn thấy trực tiếp.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- PHẦN 2: NGUYÊN NHÂN -->
+
+<section id="nguyen-nhan">
+
+  <div class="section-title">
+    <div class="kicker">PHẦN 02 · NGUYÊN NHÂN</div>
+    <h2>Điều gì duy trì vòng tuần hoàn của nước?</h2>
+  </div>
+
+  <div class="grid2">
+
+    <article class="card">
+
+      <div class="card-icon">☀️</div>
+      <h3>Năng lượng Mặt Trời</h3>
+
+      <p>
+        Năng lượng Mặt Trời làm nước trên
+        bề mặt Trái Đất bốc hơi,
+        đưa hơi nước vào khí quyển.
+      </p>
+
+      <p>
+        Đây là nguồn năng lượng quan trọng
+        thúc đẩy quá trình vận động
+        của nước trong tự nhiên.
+      </p>
+
+    </article>
+
+    <article class="card">
+
+      <div class="card-icon">🌎</div>
+      <h3>Trọng lực Trái Đất</h3>
+
+      <p>
+        Trọng lực làm những hạt mưa,
+        tuyết và các dạng giáng thủy khác
+        rơi xuống bề mặt Trái Đất.
+      </p>
+
+      <p>
+        Trọng lực cũng góp phần làm nước
+        chảy từ nơi cao xuống nơi thấp
+        và thấm xuống các tầng đất đá.
+      </p>
+
+    </article>
+
+  </div>
+
+  <div class="note">
+    <strong>Kết luận:</strong>
+    Năng lượng Mặt Trời và trọng lực
+    là hai yếu tố quan trọng duy trì
+    sự vận động liên tục của nước.
+  </div>
+
+</section>
+
+
+<!-- PHẦN 3: SƠ ĐỒ TƯƠNG TÁC -->
+
+<section id="so-do">
+
+  <div class="section-title">
+    <div class="kicker">PHẦN 03 · SƠ ĐỒ TƯƠNG TÁC</div>
+    <h2>Khám phá hành trình của nước</h2>
+    <p>
+      Quan sát sơ đồ và chọn từng quá trình
+      để tìm hiểu nước di chuyển như thế nào.
+    </p>
+  </div>
+
+  <div class="diagram-box">
+
+    <svg class="diagram-svg"
+      viewBox="0 0 1100 620"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Sơ đồ minh họa Mặt Trời, bốc hơi, ngưng tụ, mưa, dòng chảy, thấm và nước ngầm">
+
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#143468"/>
+          <stop offset="1" stop-color="#5db7d5"/>
+        </linearGradient>
+
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#48def3"/>
+          <stop offset="1" stop-color="#0a649d"/>
+        </linearGradient>
+
+        <marker id="headBlue"
+          markerWidth="11" markerHeight="11"
+          refX="8" refY="3"
+          orient="auto">
+          <path d="M0 0 L9 3 L0 6 Z"
+            fill="#87f2ff"/>
+        </marker>
+
+        <marker id="headGold"
+          markerWidth="11" markerHeight="11"
+          refX="8" refY="3"
+          orient="auto">
+          <path d="M0 0 L9 3 L0 6 Z"
+            fill="#ffd477"/>
+        </marker>
+      </defs>
+
+      <!-- BẦU TRỜI -->
+      <rect width="1100" height="620"
+        rx="18" fill="url(#sky)"/>
+
+      <!-- MẶT TRỜI -->
+      <circle cx="115" cy="90" r="48"
+        fill="#ffe186"/>
+      <g stroke="#ffe186"
+        stroke-width="7" stroke-linecap="round">
+        <path d="M115 14 V30"/>
+        <path d="M115 150 V169"/>
+        <path d="M38 90 H57"/>
+        <path d="M175 90 H194"/>
+        <path d="M60 36 L74 50"/>
+        <path d="M157 131 L172 147"/>
+        <path d="M61 146 L75 132"/>
+        <path d="M159 49 L173 35"/>
+      </g>
+
+      <!-- NÚI -->
+      <path d="M455 452 L760 165 L1060 452 Z"
+        fill="#366876"/>
+      <path d="M638 283 L760 165 L872 272
+               L813 251 L781 267 L748 245
+               L712 274 L684 254 Z"
+        fill="#e9f8ff"/>
+
+      <!-- ĐỒI VÀ CÂY -->
+      <path d="M370 452 Q530 333 690 452 Z"
+        fill="#397f72"/>
+
+      <g font-size="58">
+        <text x="405" y="419">🌳</text>
+        <text x="495" y="438">🌲</text>
+        <text x="962" y="441">🌲</text>
+      </g>
+
+      <!-- ĐẠI DƯƠNG -->
+      <path d="M0 435 Q90 422 160 435
+               T330 435 T510 435
+               L510 515 L0 515 Z"
+        fill="url(#water)"/>
+
+      <path d="M0 462 Q55 447 110 462
+               T220 462 T330 462 T440 462"
+        fill="none"
+        stroke="#bffaff"
+        stroke-width="4"
+        opacity=".8"/>
+
+      <!-- ĐẤT -->
+      <path d="M500 460 Q630 445 770 465
+               T1100 455 L1100 620
+               L500 620 Z"
+        fill="#86684d"/>
+
+      <path d="M500 520 Q650 498 800 525
+               T1100 517 L1100 620
+               L500 620 Z"
+        fill="#564b4b"/>
+
+      <!-- SÔNG -->
+      <path d="M806 370
+               C770 416 785 449 722 462
+               C655 480 600 465 516 480"
+        stroke="#70e9ff"
+        stroke-width="22"
+        fill="none"/>
+
+      <!-- MÂY -->
+      <g fill="#f4fbff">
+        <ellipse cx="530" cy="150" rx="132" ry="43"/>
+        <circle cx="463" cy="121" r="53"/>
+        <circle cx="535" cy="99" r="69"/>
+        <circle cx="618" cy="126" r="50"/>
+      </g>
+
+      <!-- MƯA -->
+      <g stroke="#a6f5ff"
+        stroke-width="6"
+        stroke-linecap="round">
+        <path d="M470 215 L451 273"/>
+        <path d="M525 224 L509 280"/>
+        <path d="M585 218 L570 274"/>
+        <path d="M640 208 L626 259"/>
+        <path d="M490 302 L473 355"/>
+        <path d="M555 302 L538 356"/>
+        <path d="M617 300 L600 352"/>
+      </g>
+
+      <!-- BỐC HƠI -->
+      <path d="M180 420 C115 290 225 215 330 184"
+        stroke="#ffd477"
+        stroke-width="9"
+        fill="none"
+        stroke-linecap="round"
+        marker-end="url(#headGold)"/>
+
+      <!-- THOÁT HƠI NƯỚC -->
+      <path d="M442 360 C385 285 395 240 445 199"
+        stroke="#ffd477"
+        stroke-width="7"
+        fill="none"
+        stroke-dasharray="12 11"
+        marker-end="url(#headGold)"/>
+
+      <!-- DÒNG CHẢY -->
+      <path d="M900 363 C850 429 761 475 619 488"
+        stroke="#87f2ff"
+        stroke-width="8"
+        fill="none"
+        marker-end="url(#headBlue)"/>
+
+      <!-- THẤM -->
+      <path d="M833 475 L833 555"
+        stroke="#87f2ff"
+        stroke-width="7"
+        marker-end="url(#headBlue)"/>
+
+      <!-- NƯỚC DƯỚI ĐẤT -->
+      <path d="M890 573 Q760 590 610 568"
+        stroke="#74ddf7"
+        stroke-width="7"
+        stroke-dasharray="12 8"
+        fill="none"
+        marker-end="url(#headBlue)"/>
+
+      <!-- NHÃN -->
+      <g fill="#ffffff"
+        font-family="Arial,sans-serif"
+        font-weight="bold"
+        font-size="22">
+
+        <text x="40" y="232">1. Bốc hơi</text>
+
+        <text x="350" y="56">
+          2. Ngưng tụ tạo mây
+        </text>
+
+        <text x="575" y="335">3. Mưa</text>
+
+        <text x="780" y="410">
+          4. Dòng chảy mặt
+        </text>
+
+        <text x="850" y="528">
+          5. Thấm
+        </text>
+
+        <text x="654" y="609">
+          6. Nước dưới đất
+        </text>
+
+        <text x="30" y="501">
+          ĐẠI DƯƠNG
+        </text>
+
+        <text x="909" y="244">
+          NÚI
+        </text>
+      </g>
+
+    </svg>
+
+    <p class="img-caption">
+      Sơ đồ minh họa đơn giản về sự vận động
+      của nước giữa khí quyển, lục địa
+      và đại dương.
+    </p>
+
+    <div class="hotspots" id="hotspots">
+
+      <button class="hotspot active"
+        onclick="showProcess(0)">
+        ☀️ Bốc hơi
+      </button>
+
+      <button class="hotspot"
+        onclick="showProcess(1)">
+        🌳 Thoát hơi nước
+      </button>
+
+      <button class="hotspot"
+        onclick="showProcess(2)">
+        ☁️ Ngưng tụ
+      </button>
+
+      <button class="hotspot"
+        onclick="showProcess(3)">
+        🌧️ Giáng thủy
+      </button>
+
+      <button class="hotspot"
+        onclick="showProcess(4)">
+        🌊 Dòng chảy mặt
+      </button>
+
+      <button class="hotspot"
+        onclick="showProcess(5)">
+        💧 Thấm
+      </button>
+
+      <button class="hotspot"
+        onclick="showProcess(6)">
+        🪨 Nước dưới đất
+      </button>
+
+    </div>
+
+    <div class="info-panel" aria-live="polite">
+
+      <div class="info-index" id="processIndex">
+        QUÁ TRÌNH 01 / 07
+      </div>
+
+      <h3 id="processTitle">
+        Sự bốc hơi
+      </h3>
+
+      <p id="processDescription">
+        Dưới tác động của năng lượng Mặt Trời,
+        nước trên bề mặt đại dương, sông, hồ
+        và đất ẩm có thể chuyển từ thể lỏng
+        sang thể khí.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PHẦN 4: CÁC QUÁ TRÌNH -->
+
+<section id="cac-qua-trinh">
+
+  <div class="section-title">
+    <div class="kicker">
+      PHẦN 04 · KIẾN THỨC TRỌNG TÂM
+    </div>
+    <h2>Các quá trình chính trong vòng tuần hoàn nước</h2>
+  </div>
+
+  <div class="grid3">
+
+    <article class="card">
+      <div class="card-icon">☀️</div>
+      <h3>1. Bốc hơi</h3>
+      <p>
+        Nước từ đại dương, sông, hồ và
+        bề mặt đất chuyển thành hơi nước,
+        đi vào khí quyển.
+      </p>
+      <p>
+        Khi có đủ các điều kiện khác,
+        nhiệt độ cao hơn thường làm
+        tốc độ bốc hơi tăng.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🌱</div>
+      <h3>2. Thoát hơi nước</h3>
+      <p>
+        Thực vật hấp thụ nước qua rễ.
+        Một phần nước được đưa lên lá
+        và thoát ra khí quyển dưới dạng hơi nước.
+      </p>
+      <p>
+        Quá trình này cùng với sự bốc hơi
+        góp phần bổ sung hơi nước
+        cho khí quyển.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">☁️</div>
+      <h3>3. Ngưng tụ</h3>
+      <p>
+        Khi không khí chứa hơi nước
+        lạnh đi đến điều kiện thích hợp,
+        hơi nước ngưng tụ thành
+        những giọt nước nhỏ.
+      </p>
+      <p>
+        Các giọt nước hoặc tinh thể băng
+        tập hợp lại có thể tạo thành mây.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🌧️</div>
+      <h3>4. Giáng thủy</h3>
+      <p>
+        Khi các hạt nước hoặc tinh thể băng
+        trong mây phát triển đủ lớn,
+        chúng có thể rơi xuống
+        do tác động của trọng lực.
+      </p>
+      <p>
+        Giáng thủy bao gồm mưa,
+        tuyết, mưa đá và một số dạng khác.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🏞️</div>
+      <h3>5. Dòng chảy mặt</h3>
+      <p>
+        Một phần nước mưa hoặc nước băng
+        tuyết tan di chuyển trên bề mặt đất
+        theo hướng từ cao xuống thấp.
+      </p>
+      <p>
+        Nước có thể tập trung vào
+        suối, sông, hồ và cuối cùng
+        chảy ra đại dương.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">💦</div>
+      <h3>6. Thấm</h3>
+      <p>
+        Một phần nước trên bề mặt
+        thấm vào đất thông qua
+        các khoảng trống và khe nứt.
+      </p>
+      <p>
+        Nước có thể được giữ trong đất
+        hoặc thấm xuống sâu hơn,
+        bổ sung cho nguồn nước dưới đất.
+      </p>
+    </article>
+
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <div class="card-icon">🪨</div>
+    <h3>7. Sự vận động của nước dưới đất</h3>
+    <p>
+      Nước dưới đất tồn tại trong các lỗ rỗng
+      và khe nứt của đất đá.
+      Dưới tác động của chênh lệch thế năng,
+      nước có thể chuyển động từ nơi này sang nơi khác.
+      Một phần nước dưới đất trở lại sông, hồ,
+      xuất lộ thành mạch nước hoặc chảy ra biển.
+    </p>
+
+    <div class="note">
+      <strong>Kiến thức mở rộng:</strong>
+      Nước trong tự nhiên còn trải qua
+      quá trình đóng băng, tan băng,
+      thăng hoa và ngưng kết.
+      Vì vậy, vòng tuần hoàn nước thực tế
+      phức tạp hơn sơ đồ khái quát.
+    </div>
+  </div>
+
+</section>
+
+
+<!-- PHẦN 5: HÌNH ẢNH -->
+
+<section id="hinh-anh">
+
+  <div class="section-title">
+    <div class="kicker">PHẦN 05 · TƯ LIỆU TRỰC QUAN</div>
+    <h2>Quan sát vòng tuần hoàn của nước</h2>
+    <p>
+      Hai sơ đồ khoa học giúp nhận diện
+      sự liên hệ giữa các quá trình.
+    </p>
+  </div>
+
+  <div class="photo-grid">
+
+    <article class="photo-card">
+      <img
+        src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/water-cycle-natural.jpg"
+        alt="Sơ đồ vòng tuần hoàn nước trong tự nhiên của USGS"
+        loading="lazy"
+      >
+
+      <div class="photo-content">
+        <h3>Vòng tuần hoàn nước trong tự nhiên</h3>
+        <p>
+          Quan sát sự di chuyển của nước
+          giữa khí quyển, bề mặt đất,
+          sông hồ, đại dương và nguồn nước dưới đất.
+          Nguồn: USGS.
+        </p>
+      </div>
+    </article>
+
+    <article class="photo-card">
+      <img
+        src="https://assets.science.nasa.gov/dynamicimage/assets/science/esd/climate/internal_resources/2513/Earths_water_cycle.jpeg?crop=faces%2Cfocalpoint&amp;fit=clip&amp;format=jpeg&amp;w=2048"
+        alt="Sơ đồ vòng tuần hoàn nước của NASA"
+        loading="lazy"
+      >
+
+      <div class="photo-content">
+        <h3>Các quá trình vận động của nước</h3>
+        <p>
+          Nhận diện bốc hơi, thoát hơi nước,
+          ngưng tụ, giáng thủy, tuyết tan,
+          dòng chảy và thấm.
+          Nguồn: NASA.
+        </p>
+      </div>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- PHẦN 6: VÒNG TUẦN HOÀN NHỎ VÀ LỚN -->
+
+<section id="phan-loai">
+
+  <div class="section-title">
+    <div class="kicker">PHẦN 06 · PHÂN LOẠI</div>
+    <h2>Vòng tuần hoàn nhỏ và vòng tuần hoàn lớn</h2>
+  </div>
+
+  <div class="grid2">
+
+    <article class="cycle-card">
+
+      <div class="card-icon">🌊</div>
+      <h3>1. Vòng tuần hoàn nhỏ</h3>
+
+      <p>
+        Là dạng tuần hoàn nước diễn ra
+        chủ yếu giữa đại dương và khí quyển.
+      </p>
+
+      <div class="cycle-chain">
+        <span class="chain-item">Đại dương</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-item">Bốc hơi</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-item">Tạo mây</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-item">Mưa xuống biển</span>
+      </div>
+
+      <p>
+        Nước biển bốc hơi, hơi nước ngưng tụ
+        thành mây, sau đó nước lại rơi xuống biển
+        qua quá trình giáng thủy.
+      </p>
+
+    </article>
+
+    <article class="cycle-card">
+
+      <div class="card-icon">🌍</div>
+      <h3>2. Vòng tuần hoàn lớn</h3>
+
+      <p>
+        Là dạng tuần hoàn nước có sự tham gia
+        của khí quyển, đại dương và lục địa.
+      </p>
+
+      <div class="cycle-chain">
+        <span class="chain-item">Đại dương</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-item">Khí quyển</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-item">Lục địa</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-item">Sông / Nước dưới đất</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-item">Đại dương</span>
+      </div>
+
+      <p>
+        Nước bốc hơi từ đại dương,
+        được vận chuyển trong khí quyển,
+        có thể tạo mưa hoặc tuyết trên lục địa.
+        Sau đó, nước theo dòng chảy,
+        thấm xuống đất hoặc bốc hơi trở lại,
+        tiếp tục tham gia vòng tuần hoàn.
+      </p>
+
+    </article>
+
+  </div>
+
+  <div class="note">
+    <strong>Lưu ý khoa học:</strong>
+    Vòng tuần hoàn nhỏ và lớn là cách
+    khái quát để học sinh dễ tìm hiểu.
+    Trong tự nhiên, các dòng nước liên kết
+    với nhau thành một hệ thống liên tục,
+    không phải hai chu trình hoàn toàn tách biệt.
+  </div>
+
+</section>
+
+
+<!-- PHẦN 7: VAI TRÒ -->
+
+<section id="vai-tro">
+
+  <div class="section-title">
+    <div class="kicker">PHẦN 07 · Ý NGHĨA</div>
+    <h2>Vai trò của vòng tuần hoàn nước</h2>
+  </div>
+
+  <div class="grid3">
+
+    <article class="card">
+      <div class="card-icon">🌿</div>
+      <h3>Duy trì sự sống</h3>
+      <p>
+        Cung cấp và phân phối nước
+        cho các hệ sinh thái,
+        hỗ trợ đời sống của thực vật,
+        động vật và con người.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🌧️</div>
+      <h3>Phân phối nước</h3>
+      <p>
+        Góp phần vận chuyển nước
+        giữa đại dương, khí quyển
+        và lục địa, bổ sung nước
+        cho nhiều khu vực.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🌡️</div>
+      <h3>Điều hòa khí hậu</h3>
+      <p>
+        Quá trình bốc hơi và ngưng tụ
+        có trao đổi nhiệt,
+        góp phần vào sự vận động
+        năng lượng trong khí quyển.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🌾</div>
+      <h3>Phục vụ sản xuất</h3>
+      <p>
+        Nước mưa, sông hồ và
+        nước dưới đất có vai trò
+        quan trọng đối với nông nghiệp,
+        công nghiệp và sinh hoạt.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🏞️</div>
+      <h3>Hình thành địa hình</h3>
+      <p>
+        Dòng chảy của nước có thể
+        gây xói mòn, vận chuyển
+        và bồi tụ vật liệu,
+        góp phần tạo nên địa hình.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">💧</div>
+      <h3>Bổ sung nguồn nước</h3>
+      <p>
+        Giáng thủy và quá trình thấm
+        góp phần bổ sung lượng nước
+        cho sông, hồ, đất
+        và các tầng chứa nước dưới đất.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- PHẦN 8: TÁC ĐỘNG CON NGƯỜI -->
+
+<section id="con-nguoi">
+
+  <div class="section-title">
+    <div class="kicker">
+      PHẦN 08 · CON NGƯỜI VÀ MÔI TRƯỜNG
+    </div>
+    <h2>Con người tác động thế nào đến vòng tuần hoàn nước?</h2>
+  </div>
+
+  <div class="grid2">
+
+    <article class="card">
+      <div class="card-icon">🌳</div>
+      <h3>Thay đổi lớp phủ thực vật</h3>
+      <p>
+        Chặt phá rừng hoặc thay đổi
+        lớp phủ thực vật có thể ảnh hưởng
+        đến sự thấm nước, dòng chảy mặt
+        và lượng hơi nước được thực vật
+        đưa trở lại khí quyển.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🏙️</div>
+      <h3>Đô thị hóa</h3>
+      <p>
+        Bê tông và nhựa đường
+        làm thay đổi khả năng thấm nước
+        của bề mặt, có thể làm tăng
+        dòng chảy mặt và nguy cơ
+        ngập trong các trận mưa lớn.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🏭</div>
+      <h3>Ô nhiễm nước</h3>
+      <p>
+        Nước thải và chất ô nhiễm
+        từ hoạt động của con người
+        có thể làm suy giảm chất lượng
+        nước sông, hồ và nước dưới đất.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🌡️</div>
+      <h3>Biến đổi khí hậu</h3>
+      <p>
+        Sự nóng lên toàn cầu làm thay đổi
+        quá trình bốc hơi và nhiều đặc điểm
+        của chế độ mưa, có thể góp phần
+        làm gia tăng nguy cơ hạn hán
+        hoặc mưa cực đoan tại một số khu vực.
+      </p>
+    </article>
+
+  </div>
+
+  <div class="note">
+    <strong>Thông điệp:</strong>
+    Nước trong tự nhiên luôn tuần hoàn,
+    nhưng điều đó không có nghĩa là
+    nguồn nước sạch, dễ sử dụng của con người
+    là vô hạn. Mỗi chúng ta cần sử dụng nước
+    tiết kiệm và bảo vệ nguồn nước.
+  </div>
+
+</section>
+
+
+<!-- PHẦN 9: VẬN DỤNG -->
+
+<section id="van-dung">
+
+  <div class="section-title">
+    <div class="kicker">PHẦN 09 · LIÊN HỆ THỰC TIỄN</div>
+    <h2>Giải thích các hiện tượng quanh em</h2>
+    <p>
+      Hãy suy nghĩ trước khi mở đáp án gợi ý.
+    </p>
+  </div>
+
+  <details>
+    <summary>
+      1. Vì sao sau một trận mưa,
+      mặt đường có thể khô trở lại?
+    </summary>
+    <p>
+      Nước mưa có thể chảy vào hệ thống
+      thoát nước, thấm vào những nơi
+      có khả năng thấm hoặc bốc hơi
+      trở lại khí quyển.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      2. Vì sao trồng cây có thể giúp
+      giảm dòng chảy mặt?
+    </summary>
+    <p>
+      Thảm thực vật góp phần giữ nước,
+      cản bớt dòng chảy, bảo vệ cấu trúc đất
+      và trong nhiều điều kiện có thể
+      làm tăng khả năng nước thấm vào đất.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      3. Tại sao nước mưa có thể bổ sung
+      nguồn nước dưới đất?
+    </summary>
+    <p>
+      Một phần nước mưa thấm qua bề mặt đất,
+      tiếp tục di chuyển xuống các tầng đất đá.
+      Nếu điều kiện địa chất cho phép,
+      lượng nước này có thể bổ sung
+      cho tầng chứa nước dưới đất.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      4. Vì sao xây dựng quá nhiều
+      bề mặt bê tông có thể làm tăng ngập?
+    </summary>
+    <p>
+      Bề mặt bê tông ít thấm nước
+      khiến một phần lớn nước mưa
+      trở thành dòng chảy mặt.
+      Nếu lượng nước vượt quá khả năng
+      thoát nước, ngập có thể xuất hiện.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      5. Nước trong tự nhiên luôn tuần hoàn,
+      vậy tại sao cần tiết kiệm nước?
+    </summary>
+    <p>
+      Vì nước ngọt có thể sử dụng được
+      không phân bố đều theo không gian,
+      thời gian và có thể bị ô nhiễm.
+      Quá trình tuần hoàn tự nhiên
+      không bảo đảm mọi nơi luôn có
+      đủ nước sạch khi cần.
+    </p>
+  </details>
+
+</section>
+
+
+<!-- PHẦN 10: TỔNG KẾT -->
+
+<section id="tong-ket">
+
+  <div class="summary-card">
+
+    <div class="kicker">TỔNG KẾT BÀI HỌC</div>
+
+    <h2>KIẾN THỨC CẦN GHI NHỚ</h2>
+
+    <h3>1. Khái niệm</h3>
+    <p>
+      Vòng tuần hoàn của nước là sự vận động
+      liên tục của nước giữa khí quyển,
+      lục địa, đại dương và bên dưới mặt đất.
+    </p>
+
+    <h3>2. Động lực chủ yếu</h3>
+    <p>
+      Năng lượng Mặt Trời và trọng lực.
+    </p>
+
+    <h3>3. Các quá trình chính</h3>
+    <p>
+      Bốc hơi – Thoát hơi nước –
+      Ngưng tụ – Giáng thủy –
+      Dòng chảy – Thấm –
+      Vận động của nước dưới đất.
+    </p>
+
+    <h3>4. Hai dạng tuần hoàn được khái quát</h3>
+    <p>
+      Vòng tuần hoàn nhỏ và vòng tuần hoàn lớn.
+    </p>
+
+    <h3>5. Ý nghĩa</h3>
+    <p>
+      Vòng tuần hoàn của nước góp phần
+      phân phối nước, duy trì sự sống,
+      bổ sung nguồn nước và liên kết
+      các thành phần của tự nhiên.
+    </p>
+
+    <div class="note">
+      <strong>Kết luận:</strong>
+      Nước không ngừng vận động,
+      thay đổi trạng thái và di chuyển
+      giữa các bộ phận của Trái Đất.
+      Vòng tuần hoàn này có ý nghĩa thiết yếu
+      đối với môi trường tự nhiên
+      và đời sống con người.
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- TÀI LIỆU THAM KHẢO -->
+
+<section id="tai-lieu">
+
+  <div class="section-title">
+    <div class="kicker">TÀI LIỆU THAM KHẢO</div>
+    <h2>Nguồn kiến thức khoa học</h2>
+  </div>
+
+  <div class="card source">
+
+    <p>
+      1. United States Geological Survey (USGS).
+      Water Science School – Water Cycle.
+      <br>
+      <a href="https://www.usgs.gov/water-science-school/water-cycle"
+         target="_blank" rel="noopener noreferrer">
+        Xem nguồn USGS
+      </a>
+    </p>
+
+    <p>
+      2. National Oceanic and Atmospheric
+      Administration (NOAA).
+      The Water Cycle.
+      <br>
+      <a href="https://www.noaa.gov/education/resource-collections/freshwater/water-cycle"
+         target="_blank" rel="noopener noreferrer">
+        Xem nguồn NOAA
+      </a>
+    </p>
+
+    <p>
+      3. NASA Science.
+      Earth's Water Cycle.
+      <br>
+      <a href="https://science.nasa.gov/earth/climate-change/steamy-relationships-how-atmospheric-water-vapor-amplifies-earths-greenhouse-effect/"
+         target="_blank" rel="noopener noreferrer">
+        Xem sơ đồ NASA
+      </a>
+    </p>
+
+  </div>
+
+</section>
+
+
+<div style="text-align:center">
+  <a href="#khai-niem" class="btn">
+    ↑ ĐẦU BÀI
+  </a>
+
+  <a href="../index.html" class="btn">
+    ⌂ TRANG CHỦ
+  </a>
+</div>
+
+</main>
+
+<footer>
+  HÀNH TRÌNH CỦA NƯỚC
+  <br>
+  KHÁM PHÁ · HIỂU BIẾT · VẬN DỤNG
+</footer>
+
+
+<script>
+"use strict";
+
+/*
+========================================
+DỮ LIỆU TƯƠNG TÁC SƠ ĐỒ
+
+Có thể sửa nội dung từng quá trình
+ngay bên dưới mà không cần sửa HTML.
+========================================
+*/
+
+const processes = [
+  {
+    title:"1. Sự bốc hơi",
+    description:
+      "Dưới tác động của năng lượng Mặt Trời, " +
+      "nước trên đại dương, sông, hồ và bề mặt đất " +
+      "chuyển từ thể lỏng sang thể khí. " +
+      "Hơi nước được đưa vào khí quyển. " +
+      "Đây là một quá trình quan trọng trong " +
+      "vòng tuần hoàn của nước."
+  },
+  {
+    title:"2. Sự thoát hơi nước của thực vật",
+    description:
+      "Rễ cây hấp thụ nước từ đất. " +
+      "Một phần nước đi lên thân và lá rồi " +
+      "thoát ra khí quyển dưới dạng hơi nước. " +
+      "Quá trình này góp phần duy trì " +
+      "độ ẩm không khí và vòng tuần hoàn nước."
+  },
+  {
+    title:"3. Sự ngưng tụ",
+    description:
+      "Khi không khí ẩm lạnh đi đến mức thích hợp, " +
+      "hơi nước ngưng tụ thành các giọt nước nhỏ " +
+      "hoặc có thể hình thành tinh thể băng. " +
+      "Tập hợp các hạt nhỏ này tạo thành mây."
+  },
+  {
+    title:"4. Giáng thủy",
+    description:
+      "Khi những hạt nước hoặc tinh thể băng " +
+      "trong mây phát triển đủ lớn, " +
+      "chúng có thể rơi xuống bề mặt Trái Đất. " +
+      "Giáng thủy có thể xuất hiện dưới dạng " +
+      "mưa, tuyết, mưa đá và một số dạng khác."
+  },
+  {
+    title:"5. Dòng chảy mặt",
+    description:
+      "Khi nước mưa hoặc nước băng tuyết tan " +
+      "di chuyển trên bề mặt đất, " +
+      "chúng tạo thành dòng chảy mặt. " +
+      "Nước có thể tập trung vào suối, sông, " +
+      "hồ và chảy ra đại dương."
+  },
+  {
+    title:"6. Sự thấm",
+    description:
+      "Một phần nước mưa thấm từ bề mặt xuống đất. " +
+      "Lượng nước thấm phụ thuộc vào " +
+      "đặc tính đất, độ ẩm trước đó, " +
+      "lớp phủ thực vật và nhiều yếu tố khác. " +
+      "Một phần nước có thể thấm sâu " +
+      "để bổ sung nguồn nước dưới đất."
+  },
+  {
+    title:"7. Sự vận động của nước dưới đất",
+    description:
+      "Nước dưới đất tồn tại trong những " +
+      "lỗ rỗng và khe nứt của đất đá. " +
+      "Nước có thể di chuyển trong các tầng chứa nước " +
+      "và trở lại sông, hồ hoặc đại dương. " +
+      "Quá trình này liên kết nước dưới đất " +
+      "với các nguồn nước trên bề mặt."
+  }
+];
+
+const buttons =
+  document.querySelectorAll(".hotspot");
+
+const processTitle =
+  document.getElementById("processTitle");
+
+const processDescription =
+  document.getElementById("processDescription");
+
+const processIndex =
+  document.getElementById("processIndex");
+
+function showProcess(index){
+
+  if(index < 0 || index >= processes.length){
+    return;
+  }
+
+  const item = processes[index];
+
+  processTitle.textContent = item.title;
+  processDescription.textContent = item.description;
+
+  processIndex.textContent =
+    "QUÁ TRÌNH " +
+    String(index + 1).padStart(2,"0") +
+    " / 07";
+
+  buttons.forEach((button,i)=>{
+    const active = (i === index);
+    button.classList.toggle("active",active);
+    button.setAttribute(
+      "aria-pressed",
+      String(active)
+    );
+  });
+}
+
+showProcess(0);
+</script>
+
+</body>
+</html>
